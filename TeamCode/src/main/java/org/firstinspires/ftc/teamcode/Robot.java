@@ -3,6 +3,8 @@ package org.firstinspires.ftc.teamcode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.hardware.HardwareMap;
+import com.qualcomm.robotcore.hardware.VoltageSensor;
+
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 
 public class Robot{
@@ -10,10 +12,24 @@ public class Robot{
 	public final HardwareMap hwm;
     public final Telemetry t;
     public DcMotor topLeft, topRight, botLeft, botRight;
+    private VoltageSensor voltageSensor;
 	
 	public Robot(HardwareMap hardwareMap, Telemetry tele){
         hwm = hardwareMap;
         t = tele;
+    }
+
+    public void getVoltage(){
+	    try {
+            voltageSensor = hwm.get(VoltageSensor.class, "voltageSensor");
+            double voltage = voltageSensor.getVoltage();
+            if (voltage < 5.0) {
+                t.addLine("ROBOT BATTERY IS LOW");
+            }
+        }
+	    catch(Exception e){
+            t.addLine("Voltage Sensor: ERROR");
+	    }
     }
 	
 	public void move(Gamepad gamepad) {
