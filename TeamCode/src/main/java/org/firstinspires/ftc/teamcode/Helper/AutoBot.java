@@ -49,8 +49,14 @@ public class AutoBot extends Robot{
     }
 
     public void forward(int ticks){
-        topLeft.setTargetPosition(topLeft.getCurrentPosition() + ticks);
-        topLeft.setPower(1.00);
+        if(topLeft.getCurrentPosition() < ticks) {
+            topLeft.setPower(1.00);
+        }
+    }
+
+    public void resetEncoders(){
+        topLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        topLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
     }
 
     public void printEncoders(){

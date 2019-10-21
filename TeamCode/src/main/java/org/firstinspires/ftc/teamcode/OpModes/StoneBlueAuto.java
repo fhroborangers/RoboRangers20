@@ -36,7 +36,8 @@ public class StoneBlueAuto extends OpMode {
     public void loop() {
         telemetry.addLine("loop");
         robot.getVoltage();
-        robot.forward(4000);
+        robot.resetEncoders();
+        //robot.forward(4000);
         robot.printEncoders();
         telemetry.update();
     }
