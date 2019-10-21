@@ -1,13 +1,14 @@
 package org.firstinspires.ftc.teamcode.OpModes;
 
 
+import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import org.firstinspires.ftc.teamcode.Helper.AutoBot;
 import org.firstinspires.ftc.teamcode.Helper.TeleBot;
 
-@TeleOp(name = "StoneBlue -- Auto")
+@Autonomous(name = "StoneBlue -- Auto")
 public class StoneBlueAuto extends OpMode {
 
     AutoBot robot;
@@ -35,7 +36,7 @@ public class StoneBlueAuto extends OpMode {
     @Override
     public void loop() {
         telemetry.addLine("loop");
-        robot.getVoltage();
+        //[robot.getVoltage();
         robot.resetEncoders();
         //robot.forward(4000);
         robot.printEncoders();

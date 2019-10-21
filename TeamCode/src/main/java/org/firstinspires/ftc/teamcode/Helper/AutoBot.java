@@ -14,7 +14,7 @@ public class AutoBot extends Robot{
         try {
             topLeft = hwm.get(DcMotor.class, "topLeft");
             topLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-            topLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            topLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
             telemetry.addLine("topLeft : OK");
         } catch (Exception e) {
             telemetry.addLine("topLeft : ERROR");
@@ -23,7 +23,7 @@ public class AutoBot extends Robot{
         try {
             topRight = hwm.get(DcMotor.class, "topRight");
             topRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-            topRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            topRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
             telemetry.addLine("topRight : OK");
         } catch (Exception e) {
             telemetry.addLine("topRight : ERROR");
@@ -32,7 +32,7 @@ public class AutoBot extends Robot{
         try {
             botLeft = hwm.get(DcMotor.class, "botLeft");
             botLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-            botLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            botLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
             telemetry.addLine("botLeft : OK");
         } catch (Exception e) {
             telemetry.addLine("botLeft : ERROR");
@@ -41,7 +41,7 @@ public class AutoBot extends Robot{
         try {
             botRight = hwm.get(DcMotor.class, "botRight");
             botRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-            botRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            botRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
             telemetry.addLine("botRight : OK");
         } catch (Exception e) {
             telemetry.addLine("botRight : ERROR");
@@ -51,12 +51,26 @@ public class AutoBot extends Robot{
     public void forward(int ticks){
         if(topLeft.getCurrentPosition() < ticks) {
             topLeft.setPower(1.00);
+            botLeft.setPower(1.00);
+            topRight.setPower(1.00);
+            botRight.setPower(1.00);
+
+        }
+    }
+
+    //param is negative number
+    public void backward(int ticks) {
+        if(topLeft.getCurrentPosition() > ticks) {
+            topLeft.setPower(-1.00);
+            botLeft.setPower(-1.00);
+            topRight.setPower(-1.00);
+            botRight.setPower(-1.00);
         }
     }
 
     public void resetEncoders(){
         topLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        topLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        topLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
     }
 
     public void printEncoders(){
