@@ -60,7 +60,7 @@ public class AutoBot extends Robot{
 
     //param is negative number
     public void backward(int ticks) {
-        if(topLeft.getCurrentPosition() > ticks) {
+        if(topLeft.getCurrentPosition() > -ticks) {
             topLeft.setPower(-1.00);
             botLeft.setPower(-1.00);
             topRight.setPower(-1.00);
@@ -70,7 +70,13 @@ public class AutoBot extends Robot{
 
     public void resetEncoders(){
         topLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        botLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        topRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        botRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         topLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        botLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        topRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        botRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
     }
 
     public void printEncoders(){
