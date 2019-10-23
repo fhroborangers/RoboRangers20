@@ -6,9 +6,13 @@ import org.firstinspires.ftc.robotcore.external.Telemetry;
 
 public class AutoBot extends Robot{
 
+
     public AutoBot(HardwareMap hardwareMap, Telemetry tele) {
         super(hardwareMap, tele);
     }
+
+    //Starting Camera Code Starts Here
+    //Starting Camera Code Ends Here
 
     public void setUpWheels() {
         try {

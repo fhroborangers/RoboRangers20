@@ -29,6 +29,7 @@
 
 package org.firstinspires.ftc.teamcode.Tests;
 
+import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
@@ -51,9 +52,10 @@ import java.util.List;
  * IMPORTANT: In order to use this OpMode, you need to obtain your own Vuforia license key as
  * is explained below.
  */
-@TeleOp(name = "CameraaaaaaaaaaaaTest")
+@Autonomous(name = "CameraTestLinear")
 
-public class CameraTest extends LinearOpMode {
+public class CameraTestLinear extends LinearOpMode {
+
     private static final String TFOD_MODEL_ASSET = "Skystone.tflite";
     private static final String LABEL_FIRST_ELEMENT = "Stone";
     private static final String LABEL_SECOND_ELEMENT = "Skystone";
