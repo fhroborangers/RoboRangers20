@@ -9,6 +9,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
 import org.firstinspires.ftc.robotcore.external.tfod.Recognition;
 import org.firstinspires.ftc.robotcore.external.tfod.TFObjectDetector;
 import org.firstinspires.ftc.teamcode.Helper.AutoBot;
+import org.firstinspires.ftc.teamcode.Helper.TeleBot;
 
 import java.util.List;
 
@@ -21,10 +22,12 @@ public class CameraTestIterative extends OpMode {
     private static final String VUFORIA_KEY = "ATMeJeb/////AAAAGaZ47DzTRUyOhcXnfJD+z89ATBWAF+fi+oOutLvXaf0YT/RPuf2mu6VJsJowCDiWiOzGMHUjXKsLBqA4Ziar76oZY/juheUactiQaY6Z3qPHnGmchAMlYuqgKErvggTuqmFca8VvTjtB6YOheJmAbllTDTaCudODpnIDkuFNTa36WCTr4L8HcCnIsB7bjF8pZoivYEBwPkfCVtfAiEpqxbyDAZgNXnuCyp6v/oi3FYZbp7JkFVorcM182+q0PVN5gIr14SKEMlDcDFDiv/sQwNeQOs5iNBd1OSkCoTe9CYbdmtE0gUXxKN2w9NqwATYC6YRJP9uoopxqmr9zkepI10peh2/RnU6pHOmR0KKRAVh8";
     private VuforiaLocalizer vuforia;
     private TFObjectDetector tfod;
+    TeleBot bot;
 
     @Override
     public void init() {
         telemetry.addLine("init");
+        bot = new TeleBot(hardwareMap, telemetry);
         initVuforia();
 
         if (ClassFactory.getInstance().canCreateTFObjectDetector()) {
@@ -55,13 +58,14 @@ public class CameraTestIterative extends OpMode {
     @Override
     public void start() {
         telemetry.addLine("start");
-
+        bot.setUpWheels();
         telemetry.update();
     }
 
     @Override
     public void loop() {
         telemetry.addLine("loop");
+        bot.move2(gamepad1);
         if (tfod != null) {
             // getUpdatedRecognitions() will return null if no new information is available since
             // the last time that call was made.

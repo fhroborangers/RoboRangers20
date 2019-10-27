@@ -56,4 +56,37 @@ public class TeleBot extends Robot {
         botLeft.setPower(power.botLeft);
         botRight.setPower(power.botRight);
     }
+
+    public void move2(Gamepad gamepad){
+        if(gamepad.dpad_up){
+            topLeft.setPower(-0.3);
+            botLeft.setPower(-0.3);
+            botRight.setPower(0.3);
+            topRight.setPower(0.3);
+        }
+        else if(gamepad.dpad_down){
+            topLeft.setPower(0.3);
+            botLeft.setPower(0.3);
+            botRight.setPower(-0.3);
+            topRight.setPower(-0.3);
+        }
+        else if(gamepad.dpad_left){
+            topLeft.setPower(0.5);
+            botLeft.setPower(-0.5);
+            botRight.setPower(-0.5);
+            topRight.setPower(0.5);
+        }
+        else if(gamepad.dpad_right){
+            topLeft.setPower(-0.5);
+            botLeft.setPower(0.5);
+            botRight.setPower(0.5);
+            topRight.setPower(-  0.5);
+        }
+        else{
+            topLeft.setPower(0);
+            botLeft.setPower(0);
+            botRight.setPower(0);
+            topRight.setPower(0);
+        }
+    }
 }
