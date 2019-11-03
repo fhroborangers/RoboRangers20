@@ -36,7 +36,7 @@ public class AutoBot extends Robot{
         } catch (Exception e) {
             telemetry.addLine("topLeft : ERROR");
         }
-
+/*
         try {
             topRight = hwm.get(DcMotor.class, "topRight");
             topRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
@@ -63,6 +63,7 @@ public class AutoBot extends Robot{
         } catch (Exception e) {
             telemetry.addLine("botRight : ERROR");
         }
+        */
     }
 
     public boolean forward(int ticks){
@@ -89,9 +90,9 @@ public class AutoBot extends Robot{
         telemetry.addLine(""+(Math.abs(topLeft.getCurrentPosition()) < ticks));
         if(Math.abs(topLeft.getCurrentPosition()) < ticks) {
             topLeft.setPower(1.00);
-            botLeft.setPower(1.00);
-            topRight.setPower(-1.00);
-            botRight.setPower(-1.00);
+           // botLeft.setPower(1.00);
+           // topRight.setPower(-1.00);
+          //  botRight.setPower(-1.00);
         }
     }
 

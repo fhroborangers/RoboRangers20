@@ -26,13 +26,17 @@ public class RobotTele extends OpMode {
     public void start() {
         telemetry.addLine("start");
         robot.setUpWheels();
+        robot.setUpServos();
+        robot.setUpLiftMotor();
     }
 
     @Override
     public void loop() {
         telemetry.addLine("loop");
-        robot.getVoltage();
-        robot.move(gamepad1);
+        //robot.move(gamepad1);
+        //robot.move2(gamepad1);
+        //robot.moveClaw(gamepad1);
+        robot.moveLiftMotor(gamepad1);
     }
 
 
