@@ -96,7 +96,10 @@ public class AutoBot extends Robot{
         }
         else
         {
-
+            topLeft.setPower(0);
+            botLeft.setPower(0);
+            topRight.setPower(0);
+            botRight.setPower(0);
         }
 
     }

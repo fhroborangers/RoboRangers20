@@ -42,28 +42,18 @@ public class StoneBlueAuto extends OpMode {
         if(count == 0) {
             robot.loopVu();
             robot.resetEncoders();
-            count++;
+            //count++;
+            countPlus();
         }
         else if(count == 1) {
-
-            boolean keepGoing = robot.forward(2000);
-            if(!keepGoing)
-                count++;
+            //boolean keepGoing = robot.forward(2000);
+            //if(!keepGoing) {
+            //    count++;
+            //}
+            robot.forward((2000));
+            countPlus();
 
         }
-        /*else if(count==2) {
-            robot.strafeRight(2000);
-            count++;
-        }
-        else if(count==3) {
-            robot.strafeLeft(2000);
-            count++;
-        }
-        else {
-            telemetry.addLine("Joe"+count);
-            count++;
-        }*/
-
         robot.printEncoders();
         telemetry.update();
     }
@@ -72,6 +62,12 @@ public class StoneBlueAuto extends OpMode {
     @Override
     public void stop() {
         telemetry.addLine("stop");
+    }
+
+    public void countPlus(){
+        if(robot.topLeft.getPower() == 0){
+            count++;
+        }
     }
 
 }
