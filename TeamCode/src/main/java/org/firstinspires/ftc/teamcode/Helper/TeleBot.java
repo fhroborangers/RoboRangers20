@@ -85,11 +85,8 @@ public class TeleBot extends Robot {
         botLeft.setPower(power.botLeft);
         botRight.setPower(power.botRight);
     }
+
     public void move2(Gamepad gamepad){
-
-    }
-
-    public void move3(Gamepad gamepad){
         if(gamepad.dpad_up){
             topLeft.setPower(-0.3);
             botLeft.setPower(-0.3);
@@ -124,8 +121,35 @@ public class TeleBot extends Robot {
 
     public void moveWithAngle(Gamepad gamepad)
     {
-        double angle = Math.atan(gamepad.left_stick_y/gamepad.left_stick_x); //in radians
-        telemetry.addLine("Angle in radians: "+Math.toDegrees(angle));
+        //Getting Direction
+        //Possible Values
+        // U = Up, D = Down, L = Left, R = Right, N = None/No Movement
+        char direction;
+        double angle = Math.abs(Math.atan(gamepad.left_stick_y/gamepad.left_stick_x)); //in radians
+        telemetry.addLine("Angle in Degrees: " + Math.toDegrees(angle));
+        if(angle < Math.PI/4){
+            if(gamepad.left_stick_x > 0){
+                direction = 'R';
+            }
+            else{
+                direction = 'L';
+            }
+        }
+        else if(angle > Math.PI/4){
+            if(gamepad.left_stick_y > 0){
+                direction = 'U';
+            }
+            else{
+                direction = 'D';
+            }
+        }
+        else{
+            direction = 'N';
+        }
+
+        //Using triggers to accelerate
+
+
     }
 
     public void moveClaw(Gamepad gamepad)
