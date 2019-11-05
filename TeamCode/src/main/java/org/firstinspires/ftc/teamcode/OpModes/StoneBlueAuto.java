@@ -45,8 +45,10 @@ public class StoneBlueAuto extends OpMode {
             count++;
         }
         else if(count == 1) {
-            robot.backward(2000);
-            count++;
+
+            boolean keepGoing = robot.forward(2000);
+            if(!keepGoing)
+                count++;
 
         }
         /*else if(count==2) {

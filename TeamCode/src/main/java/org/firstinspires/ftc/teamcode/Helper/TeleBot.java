@@ -55,7 +55,7 @@ public class TeleBot extends Robot {
         try{
             liftMotor = hwm.get(DcMotor.class, "liftMotor");
             liftMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
-            liftMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+            liftMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
             telemetry.addLine("liftMotor : OK");
         } catch (Exception e) {
             telemetry.addLine("liftMotor : ERROR");
@@ -85,8 +85,11 @@ public class TeleBot extends Robot {
         botLeft.setPower(power.botLeft);
         botRight.setPower(power.botRight);
     }
-
     public void move2(Gamepad gamepad){
+
+    }
+
+    public void move3(Gamepad gamepad){
         if(gamepad.dpad_up){
             topLeft.setPower(-0.3);
             botLeft.setPower(-0.3);
@@ -117,6 +120,12 @@ public class TeleBot extends Robot {
             botRight.setPower(0);
             topRight.setPower(0);
         }
+    }
+
+    public void moveWithAngle(Gamepad gamepad)
+    {
+        double angle = Math.atan(gamepad.left_stick_y/gamepad.left_stick_x); //in radians
+        telemetry.addLine("Angle in radians: "+Math.toDegrees(angle));
     }
 
     public void moveClaw(Gamepad gamepad)
