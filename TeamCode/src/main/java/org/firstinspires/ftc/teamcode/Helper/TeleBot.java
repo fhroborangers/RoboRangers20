@@ -125,9 +125,9 @@ public class TeleBot extends Robot {
         //Possible Values
         // U = Up, D = Down, L = Left, R = Right, N = None/No Movement
         char direction;
-        double angle = Math.abs(Math.atan(gamepad.left_stick_y/gamepad.left_stick_x)); //in radians
-        telemetry.addLine("Angle in Degrees: " + Math.toDegrees(angle));
-        if(angle < Math.PI/4){
+        double angle1 = Math.abs(Math.atan(gamepad.left_stick_y/gamepad.left_stick_x)); //in radians
+        telemetry.addLine("Angle in Degrees: " + Math.toDegrees(angle1));
+        if(angle1 < Math.PI/4){
             if(gamepad.left_stick_x > 0){
                 direction = 'R';
             }
@@ -135,7 +135,7 @@ public class TeleBot extends Robot {
                 direction = 'L';
             }
         }
-        else if(angle > Math.PI/4){
+        else if(angle1 > Math.PI/4){
             if(gamepad.left_stick_y > 0){
                 direction = 'U';
             }
@@ -145,6 +145,39 @@ public class TeleBot extends Robot {
         }
         else{
             direction = 'N';
+        }
+
+
+        if(direction == 'U'){
+            topLeft.setPower(gamepad.right_trigger);
+            botLeft.setPower(gamepad.right_trigger);
+            botRight.setPower(-gamepad.right_trigger);
+            topRight.setPower(-gamepad.right_trigger);
+        }
+        else if(direction == 'D'){
+            topLeft.setPower(-gamepad.right_trigger);
+            botLeft.setPower(-gamepad.right_trigger);
+            botRight.setPower(gamepad.right_trigger);
+            topRight.setPower(gamepad.right_trigger);
+        }
+        else if(direction == 'R'){
+            topLeft.setPower(-gamepad.right_trigger);
+            botLeft.setPower(gamepad.right_trigger);
+            botRight.setPower(gamepad.right_trigger);
+            topRight.setPower(-gamepad.right_trigger);
+
+        }
+        else if(direction == 'L'){
+            topLeft.setPower(gamepad.right_trigger);
+            botLeft.setPower(-gamepad.right_trigger);
+            botRight.setPower(-gamepad.right_trigger);
+            topRight.setPower(gamepad.right_trigger);
+        }
+        else if(direction == 'N'){
+            topLeft.setPower(0);
+            botLeft.setPower(0);
+            botRight.setPower(0);
+            topRight.setPower(0);
         }
 
         //Using triggers to accelerate
@@ -171,44 +204,36 @@ public class TeleBot extends Robot {
     }
 
     public void moveLiftMotor(Gamepad gamepad) {
+        /*
         if (gamepad.left_trigger > 0 && gamepad.right_trigger == 0) {
-            if (gamepad.left_trigger < .3) {
-                System.out.println(gamepad.left_trigger);
-                liftMotor.setPower(.4);
-                telemetry.addLine("up");
-            } else if (gamepad.left_trigger < .5) {
-                liftMotor.setPower(.6);
-                telemetry.addLine("up+");
-            } else if (gamepad.left_trigger < .7) {
-                liftMotor.setPower(.8);
-                telemetry.addLine("up++");
-            } else if (gamepad.left_trigger <= 1) {
-                liftMotor.setPower(1);
-                telemetry.addLine("up max");
+             liftMotor.setPower(-gamepad.left_trigger);
             }
-        }
+
         else if(gamepad.left_trigger == 0){
             liftMotor.setPower(0);
             telemetry.addLine("LEFT 0");
         }
         if (gamepad.right_trigger > 0 && gamepad.left_trigger == 0) {
-            if (gamepad.right_trigger < .3) {
-                liftMotor.setPower(-.4);
-                telemetry.addLine("down");
-            } else if (gamepad.right_trigger < .5) {
-                liftMotor.setPower(-.6);
-                telemetry.addLine("down-");
-            } else if (gamepad.right_trigger < .7) {
-                liftMotor.setPower(-.8);
-                telemetry.addLine("down--");
-            } else if (gamepad.right_trigger <= 1) {
-                liftMotor.setPower(-1);
-                telemetry.addLine("down max");
-            }
+            liftMotor.setPower(gamepad.right_trigger);
         }
         else{
             liftMotor.setPower(0);
             telemetry.addLine("RIGHT 0");
         }
+
+         */
+        if(gamepad.dpad_down) {
+            liftMotor.setPower(-.4);
+        }
+        else if(gamepad.dpad_up){
+            liftMotor.setPower(.4);
+        }
+        else{
+            liftMotor.setPower(0);
+        }
+
+
     }
+
+
 }

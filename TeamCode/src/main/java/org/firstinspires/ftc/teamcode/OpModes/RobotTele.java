@@ -37,7 +37,7 @@ public class RobotTele extends OpMode {
         //robot.move2(gamepad1);
         robot.moveWithAngle(gamepad1);
         //robot.moveClaw(gamepad1);
-        robot.moveLiftMotor(gamepad1);
+        //robot.moveLiftMotor(gamepad1);
     }
 
 
