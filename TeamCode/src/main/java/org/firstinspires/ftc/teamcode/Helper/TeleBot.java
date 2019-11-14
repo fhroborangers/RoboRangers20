@@ -7,6 +7,8 @@ import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 
+import java.util.concurrent.ExecutionException;
+
 public class TeleBot extends Robot {
 
     public TeleBot(HardwareMap hwm, Telemetry tele){
@@ -66,16 +68,25 @@ public class TeleBot extends Robot {
     {
         try {
             claw = hwm.get(Servo.class, "claw");
-            claw.setPosition(0.5);
+
         } catch (Exception e) {
             telemetry.addLine("claw : ERROR");
         }
         try {
             movingClaw = hwm.get(Servo.class, "movingClaw");
-            movingClaw.setPosition(0.5);
+
         } catch (Exception e) {
             telemetry.addLine("movingClaw : ERROR");
         }
+
+        try{
+            potato = hwm.get(Servo.class, "potato");
+            potato.setPosition(0);
+        }
+        catch(Exception e ){
+            telemetry.addLine("potato : error");
+        }
+
     }
 
     public void move(Gamepad gamepad) {
@@ -126,6 +137,7 @@ public class TeleBot extends Robot {
         // U = Up, D = Down, L = Left, R = Right, N = None/No Movement
         char direction;
         double angle1 = Math.abs(Math.atan(gamepad.left_stick_y/gamepad.left_stick_x)); //in radians
+        double rStickX = gamepad.right_stick_x;
         telemetry.addLine("Angle in Degrees: " + Math.toDegrees(angle1));
         if(angle1 < Math.PI/4){
             if(gamepad.left_stick_x > 0){
@@ -143,7 +155,15 @@ public class TeleBot extends Robot {
                 direction = 'D';
             }
         }
-        else{
+        else if(rStickX>0) //rotate right
+        {
+            direction = 'r';
+        }
+        else if(rStickX<0) //rotate left
+        {
+            direction = 'l';
+        }
+        else {
             direction = 'N';
         }
 
@@ -173,7 +193,19 @@ public class TeleBot extends Robot {
             botRight.setPower(-gamepad.right_trigger);
             topRight.setPower(gamepad.right_trigger);
         }
-        else if(direction == 'N'){
+        else if(direction=='r') {
+            topLeft.setPower(-gamepad.right_trigger);
+            botLeft.setPower(-gamepad.right_trigger);
+            botRight.setPower(-gamepad.right_trigger);
+            topRight.setPower(-gamepad.right_trigger);
+        }
+        else if(direction=='l') {
+            topLeft.setPower(gamepad.right_trigger);
+            botLeft.setPower(gamepad.right_trigger);
+            botRight.setPower(gamepad.right_trigger);
+            topRight.setPower(gamepad.right_trigger);
+        }
+        else if(direction == 'N') {
             topLeft.setPower(0);
             botLeft.setPower(0);
             botRight.setPower(0);
@@ -190,17 +222,27 @@ public class TeleBot extends Robot {
         if(gamepad.a){
             claw.setPosition(0);
         }
-        else if(gamepad.b){
+        else if(gamepad.x){
             claw.setPosition(1);
         }
-
         if(gamepad.right_bumper){
-            movingClaw.setPosition(0);
+            movingClaw.setPosition(1);
         }
         else if(gamepad.left_bumper) {
             movingClaw.setPosition(.5);
         }
 
+    }
+    public void potatoServo(Gamepad gamepad) {
+        if (gamepad.y)
+        {
+
+            potato.setPosition(.5);
+
+        }
+        if(gamepad.b){
+            potato.setPosition(1);
+        }
     }
 
     public void moveLiftMotor(Gamepad gamepad) {

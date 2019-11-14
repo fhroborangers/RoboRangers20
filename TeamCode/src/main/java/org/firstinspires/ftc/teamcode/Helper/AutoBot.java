@@ -19,6 +19,7 @@ public class AutoBot extends Robot{
     private static final String VUFORIA_KEY = "ATMeJeb/////AAAAGaZ47DzTRUyOhcXnfJD+z89ATBWAF+fi+oOutLvXaf0YT/RPuf2mu6VJsJowCDiWiOzGMHUjXKsLBqA4Ziar76oZY/juheUactiQaY6Z3qPHnGmchAMlYuqgKErvggTuqmFca8VvTjtB6YOheJmAbllTDTaCudODpnIDkuFNTa36WCTr4L8HcCnIsB7bjF8pZoivYEBwPkfCVtfAiEpqxbyDAZgNXnuCyp6v/oi3FYZbp7JkFVorcM182+q0PVN5gIr14SKEMlDcDFDiv/sQwNeQOs5iNBd1OSkCoTe9CYbdmtE0gUXxKN2w9NqwATYC6YRJP9uoopxqmr9zkepI10peh2/RnU6pHOmR0KKRAVh8";
     private VuforiaLocalizer vuforia;
     private TFObjectDetector tfod;
+    public int count = 0;
 
     public AutoBot(HardwareMap hardwareMap, Telemetry tele) {
         super(hardwareMap, tele);
@@ -81,8 +82,15 @@ public class AutoBot extends Robot{
             botLeft.setPower(0);
             topRight.setPower(0);
             botRight.setPower(0);
+            count++;
             return true;
         }
+    }
+
+    public void forwardCM(int cm){
+        double tickspercm = 730 /(4*Math.PI);
+        int ticks = (int)tickspercm * cm;
+        forward(ticks);
     }
 
     //param is negative number
@@ -100,6 +108,7 @@ public class AutoBot extends Robot{
             botLeft.setPower(0);
             topRight.setPower(0);
             botRight.setPower(0);
+            count++;
         }
 
     }
@@ -132,6 +141,7 @@ public class AutoBot extends Robot{
         botLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         topRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         botRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        count++;
     }
 
     public void printEncoders(){

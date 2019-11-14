@@ -14,7 +14,7 @@ public class Robot {
     public final Telemetry telemetry;
     public DcMotor topLeft, topRight, botLeft, botRight;
     public DcMotor liftMotor;
-    public Servo claw, movingClaw;
+    public Servo claw, movingClaw, potato;
 
     public Robot(HardwareMap hardwareMap, Telemetry tele) {
         hwm = hardwareMap;

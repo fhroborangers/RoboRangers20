@@ -12,14 +12,12 @@ import org.firstinspires.ftc.teamcode.Helper.TeleBot;
 public class StoneBlueAuto extends OpMode {
 
     AutoBot robot;
-    int count;
 
     @Override
     public void init() {
         telemetry.addLine("init");
         robot = new AutoBot(hardwareMap, telemetry);
         robot.initVu();
-        count = 0;
         telemetry.update();
     }
 
@@ -38,20 +36,14 @@ public class StoneBlueAuto extends OpMode {
 
     @Override
     public void loop() {
+        int count = robot.count;
         telemetry.addLine("loop "+count);
         if(count == 0) {
             robot.loopVu();
             robot.resetEncoders();
-            //count++;
-            countPlus();
         }
         else if(count == 1) {
-            //boolean keepGoing = robot.forward(2000);
-            //if(!keepGoing) {
-            //    count++;
-            //}
-            robot.forward((2000));
-            countPlus();
+            robot.forwardCM(100);
 
         }
         robot.printEncoders();
@@ -62,12 +54,6 @@ public class StoneBlueAuto extends OpMode {
     @Override
     public void stop() {
         telemetry.addLine("stop");
-    }
-
-    public void countPlus(){
-        if(robot.topLeft.getPower() == 0){
-            count++;
-        }
     }
 
 }
