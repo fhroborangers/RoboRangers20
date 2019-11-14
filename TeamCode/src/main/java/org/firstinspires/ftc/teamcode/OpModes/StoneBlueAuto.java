@@ -26,11 +26,11 @@ public class StoneBlueAuto extends OpMode {
 
     }
 
-
     @Override
     public void start() {
         telemetry.addLine("start");
         robot.setUpWheels();
+        robot.setUpLiftMotor();
         telemetry.update();
     }
 
@@ -41,10 +41,14 @@ public class StoneBlueAuto extends OpMode {
         if(count == 0) {
             robot.loopVu();
             robot.resetEncoders();
+            robot.count++;
         }
         else if(count == 1) {
             robot.forwardCM(100);
-
+            robot.resetEncoders();
+        }
+        else if(count == 2) {
+            //robot.backwardCM(100);
         }
         robot.printEncoders();
         telemetry.update();

@@ -2,7 +2,6 @@ package org.firstinspires.ftc.teamcode.Helper;
 
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
-
 import org.firstinspires.ftc.robotcore.external.ClassFactory;
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
@@ -24,9 +23,6 @@ public class AutoBot extends Robot{
     public AutoBot(HardwareMap hardwareMap, Telemetry tele) {
         super(hardwareMap, tele);
     }
-
-    //Starting Camera Code Starts Here
-    //Starting Camera Code Ends Here
 
     public void setUpWheels() {
         try {
@@ -64,17 +60,26 @@ public class AutoBot extends Robot{
         } catch (Exception e) {
             telemetry.addLine("botRight : ERROR");
         }
-
     }
 
-    public boolean forward(int ticks){
+    public void setUpLiftMotor() {
+        try {
+            liftMotor = hwm.get(DcMotor.class, "liftMotor");
+            liftMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+            liftMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+            telemetry.addLine("liftMotor : OK");
+        } catch (Exception e) {
+            telemetry.addLine("liftMotor : ERROR");
+        }
+    }
+
+    public void forward(int ticks){
         telemetry.addLine(""+(Math.abs(topLeft.getCurrentPosition()) < ticks));
         if(Math.abs(topLeft.getCurrentPosition()) < ticks) {
             topLeft.setPower(-1.00);
             botLeft.setPower(-1.00);
             topRight.setPower(1.00);
             botRight.setPower(1.00);
-            return false;
         }
         else{
             telemetry.addLine("here lmao");
@@ -83,14 +88,7 @@ public class AutoBot extends Robot{
             topRight.setPower(0);
             botRight.setPower(0);
             count++;
-            return true;
         }
-    }
-
-    public void forwardCM(int cm){
-        double tickspercm = 730 /(4*Math.PI);
-        int ticks = (int)tickspercm * cm;
-        forward(ticks);
     }
 
     //param is negative number
@@ -102,14 +100,40 @@ public class AutoBot extends Robot{
             topRight.setPower(-1.00);
             botRight.setPower(-1.00);
         }
-        else
-        {
+        else{
             topLeft.setPower(0);
             botLeft.setPower(0);
             topRight.setPower(0);
             botRight.setPower(0);
             count++;
         }
+    }
+
+    public void rotateLeft(int ticks){
+
+    }
+
+    public void rotateRight(int ticks){
+
+    }
+
+    public void forwardCM(int cm){
+        double ticksPerCM = 730 /(4*Math.PI);
+        int ticks = (int)ticksPerCM * cm;
+        forward(ticks);
+    }
+
+    public void backwardCM(int cm){
+        double ticksPerCM = 730 /(4*Math.PI);
+        int ticks = (int)ticksPerCM * cm;
+        backward(ticks);
+    }
+
+    public void rotateLeftDegrees(int degrees){
+
+    }
+
+    public void rotateRightDegrees(int degrees){
 
     }
 
@@ -141,7 +165,7 @@ public class AutoBot extends Robot{
         botLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         topRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         botRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        count++;
+        //Need to add liftMotor once second Expansion Hub is added
     }
 
     public void printEncoders(){
@@ -149,6 +173,7 @@ public class AutoBot extends Robot{
         telemetry.addLine("BotLeft Encoders: " + botLeft.getCurrentPosition());
         telemetry.addLine("TopRight Encoders: " + topRight.getCurrentPosition());
         telemetry.addLine("BotRight Encoders: " + botRight.getCurrentPosition());
+        //Need to add liftMotor once second Expansion Hub is added
     }
 
     public void initVu(){
