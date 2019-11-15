@@ -87,7 +87,7 @@ public class AutoBot extends Robot{
             botLeft.setPower(0);
             topRight.setPower(0);
             botRight.setPower(0);
-            robot.resetEncoders();
+            resetEncoders();
             count++;
         }
     }
@@ -106,13 +106,13 @@ public class AutoBot extends Robot{
             botLeft.setPower(0);
             topRight.setPower(0);
             botRight.setPower(0);
-            robot.resetEncoders();
+            resetEncoders();
             count++;
         }
     }
 
     public void rotateLeft(int ticks){
-        if(Math.abs(topLeft.getCurrentPosition())<ticks) {
+        if(Math.abs(topLeft.getCurrentPosition()) < ticks) {
             topLeft.setPower(1.00);
             botLeft.setPower(1.00);
             topRight.setPower(1.00);
@@ -123,13 +123,13 @@ public class AutoBot extends Robot{
             botLeft.setPower(0);
             topRight.setPower(0);
             botRight.setPower(0);
-            robot.resetEncoders();
+            resetEncoders();
             count++;
         }
     }
 
     public void rotateRight(int ticks){
-        if(Math.abs(topLeft.getCurrentPosition())<ticks) {
+        if(Math.abs(topLeft.getCurrentPosition()) < ticks) {
             topLeft.setPower(-1.00);
             botLeft.setPower(-1.00);
             topRight.setPower(-1.00);
@@ -140,7 +140,7 @@ public class AutoBot extends Robot{
             botLeft.setPower(0);
             topRight.setPower(0);
             botRight.setPower(0);
-            robot.resetEncoders();
+            resetEncoders();
             count++;
         }
     }
@@ -181,7 +181,7 @@ public class AutoBot extends Robot{
             botLeft.setPower(0);
             topRight.setPower(0);
             botRight.setPower(0);
-            robot.resetEncoders();
+            resetEncoders();
             count++;
         }
     }
@@ -198,7 +198,7 @@ public class AutoBot extends Robot{
             botLeft.setPower(0);
             topRight.setPower(0);
             botRight.setPower(0);
-            robot.resetEncoders();
+            resetEncoders();
             count++;
         }
     }

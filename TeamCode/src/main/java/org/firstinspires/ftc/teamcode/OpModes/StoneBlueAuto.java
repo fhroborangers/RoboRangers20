@@ -47,7 +47,7 @@ public class StoneBlueAuto extends OpMode {
             robot.forwardCM(100);
         }
         else if(count == 2) {
-            //robot.backwardCM(100);
+            robot.backwardCM(100);
         }
         robot.printEncoders();
         telemetry.update();
