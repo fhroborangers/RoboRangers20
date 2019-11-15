@@ -134,7 +134,7 @@ public class TeleBot extends Robot {
     {
         //Getting Direction
         //Possible Values
-        // U = Up, D = Down, L = Left, R = Right, N = None/No Movement
+        // U = Up, D = Down, L = Left, R = Right, N = None/No Movement, r = rotate right, l = rotate left
         char direction;
         double angle1 = Math.abs(Math.atan(gamepad.left_stick_y/gamepad.left_stick_x)); //in radians
         double rStickX = gamepad.right_stick_x;

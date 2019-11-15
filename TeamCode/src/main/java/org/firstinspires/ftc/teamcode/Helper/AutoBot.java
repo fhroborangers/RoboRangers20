@@ -87,6 +87,7 @@ public class AutoBot extends Robot{
             botLeft.setPower(0);
             topRight.setPower(0);
             botRight.setPower(0);
+            robot.resetEncoders();
             count++;
         }
     }
@@ -100,21 +101,48 @@ public class AutoBot extends Robot{
             topRight.setPower(-1.00);
             botRight.setPower(-1.00);
         }
-        else{
+        else {
             topLeft.setPower(0);
             botLeft.setPower(0);
             topRight.setPower(0);
             botRight.setPower(0);
+            robot.resetEncoders();
             count++;
         }
     }
 
     public void rotateLeft(int ticks){
-
+        if(Math.abs(topLeft.getCurrentPosition())<ticks) {
+            topLeft.setPower(1.00);
+            botLeft.setPower(1.00);
+            topRight.setPower(1.00);
+            botRight.setPower(1.00);
+        }
+        else {
+            topLeft.setPower(0);
+            botLeft.setPower(0);
+            topRight.setPower(0);
+            botRight.setPower(0);
+            robot.resetEncoders();
+            count++;
+        }
     }
 
     public void rotateRight(int ticks){
-
+        if(Math.abs(topLeft.getCurrentPosition())<ticks) {
+            topLeft.setPower(-1.00);
+            botLeft.setPower(-1.00);
+            topRight.setPower(-1.00);
+            botRight.setPower(-1.00);
+        }
+        else {
+            topLeft.setPower(0);
+            botLeft.setPower(0);
+            topRight.setPower(0);
+            botRight.setPower(0);
+            robot.resetEncoders();
+            count++;
+        }
     }
 
     public void forwardCM(int cm){
@@ -130,11 +158,14 @@ public class AutoBot extends Robot{
     }
 
     public void rotateLeftDegrees(int degrees){
-
+        //THIS IS AN UNTESTED, RANDOM CONVERSION, PLEASE CHANGE THIS GOD PLEASE
+        //temporary bootleg conversion: 1 degree = 10 ticks
+        rotateLeft(degrees*10);
     }
 
     public void rotateRightDegrees(int degrees){
-
+        //same dealio with rotateLeftDegrees
+        rotateRight(degrees*10);
     }
 
     public void strafeLeft(int ticks)
@@ -145,6 +176,14 @@ public class AutoBot extends Robot{
             topRight.setPower(1.00);
             botRight.setPower(-1.00);
         }
+        else {
+            topLeft.setPower(0);
+            botLeft.setPower(0);
+            topRight.setPower(0);
+            botRight.setPower(0);
+            robot.resetEncoders();
+            count++;
+        }
     }
 
     public void strafeRight(int ticks) {
@@ -153,6 +192,14 @@ public class AutoBot extends Robot{
             botLeft.setPower(1.00);
             topRight.setPower(-1.00);
             botRight.setPower(1.00);
+        }
+        else {
+            topLeft.setPower(0);
+            botLeft.setPower(0);
+            topRight.setPower(0);
+            botRight.setPower(0);
+            robot.resetEncoders();
+            count++;
         }
     }
 
