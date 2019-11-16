@@ -266,6 +266,53 @@ public class AutoBot extends Robot{
         }
     }
 
+    public int[] countStones() {
+        int[] stones = {0,0,0,0,0,0};
+        if (tfod != null) {
+            List<Recognition> updatedRecognitions = tfod.getUpdatedRecognitions();
+            if (updatedRecognitions != null) {
+                for (Recognition recognition : updatedRecognitions) {
+                    for(int i = 0; i < stones.length; i++){
+                        if(stones[i] == 0){
+                            if(recognition.getLabel().equals(LABEL_FIRST_ELEMENT)){
+                                stones[i] = 1;
+                            }
+                            else if(recognition.getLabel().equals(LABEL_SECOND_ELEMENT)){
+                                stones[i] = 2;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        return stones;
+    }
+
+    public boolean SkyStonesLocation1(){
+        boolean output = false;
+        if (tfod != null) {
+            List<Recognition> updatedRecognitions = tfod.getUpdatedRecognitions();
+            if (updatedRecognitions != null) {
+                for (Recognition recognition : updatedRecognitions) {
+                    if(recognition.getLabel().equals(LABEL_SECOND_ELEMENT)){
+                        float middlePointBlock = (recognition.getLeft() + recognition.getRight())/2;
+                        float middlePointImage = (recognition.getImageWidth()/2);
+                        //Middle of detection rectangle should within a range of 10 of the middle of image
+                        if(middlePointBlock > middlePointImage - 10 && middlePointBlock < middlePointImage + 10){
+                            telemetry.addLine("FOUND SKYSTONE ---- STOOOOOOP :)");
+                            output = true;
+                        }
+                        else{
+                            telemetry.addLine("KEEEP GOING :(");
+                            output = false;
+                        }
+                    }
+                }
+            }
+        }
+        return output;
+    }
+
     /**
      * Initialize the Vuforia localization engine.
      */
@@ -294,5 +341,7 @@ public class AutoBot extends Robot{
         tfod = ClassFactory.getInstance().createTFObjectDetector(tfodParameters, vuforia);
         tfod.loadModelFromAsset(TFOD_MODEL_ASSET, LABEL_FIRST_ELEMENT, LABEL_SECOND_ELEMENT);
     }
+
+
 
 }

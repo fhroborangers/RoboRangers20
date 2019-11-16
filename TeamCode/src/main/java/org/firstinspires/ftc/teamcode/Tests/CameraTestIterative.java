@@ -2,6 +2,7 @@ package org.firstinspires.ftc.teamcode.Tests;
 
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 
 import org.firstinspires.ftc.robotcore.external.ClassFactory;
@@ -13,6 +14,7 @@ import org.firstinspires.ftc.teamcode.Helper.TeleBot;
 
 import java.util.List;
 
+@Disabled
 @Autonomous(name = "CameraTestIterative")
 public class CameraTestIterative extends OpMode {
 

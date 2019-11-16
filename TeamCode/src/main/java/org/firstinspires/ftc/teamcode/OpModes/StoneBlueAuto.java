@@ -37,7 +37,7 @@ public class StoneBlueAuto extends OpMode {
     @Override
     public void loop() {
         int count = robot.count;
-        telemetry.addLine("loop "+count);
+        telemetry.addLine("loop " + count);
         if(count == 0) {
             robot.loopVu();
             robot.resetEncoders();
