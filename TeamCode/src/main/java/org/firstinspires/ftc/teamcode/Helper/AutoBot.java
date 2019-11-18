@@ -19,6 +19,9 @@ public class AutoBot extends Robot{
     private VuforiaLocalizer vuforia;
     private TFObjectDetector tfod;
     public int count = 0;
+    private int[] stones = {0,0,0,0,0,0};
+    private int i = 0;
+    private boolean recognitionHelper = true;
 
     public AutoBot(HardwareMap hardwareMap, Telemetry tele) {
         super(hardwareMap, tele);
@@ -76,10 +79,10 @@ public class AutoBot extends Robot{
     public void forward(int ticks){
         telemetry.addLine(""+(Math.abs(topLeft.getCurrentPosition()) < ticks));
         if(Math.abs(topLeft.getCurrentPosition()) < ticks) {
-            topLeft.setPower(-1.00);
-            botLeft.setPower(-1.00);
-            topRight.setPower(1.00);
-            botRight.setPower(1.00);
+            topLeft.setPower(-.60);
+            botLeft.setPower(-.60);
+            topRight.setPower(.60);
+            botRight.setPower(.60);
         }
         else{
             telemetry.addLine("here lmao");
@@ -87,7 +90,7 @@ public class AutoBot extends Robot{
             botLeft.setPower(0);
             topRight.setPower(0);
             botRight.setPower(0);
-            resetEncoders();
+            //resetEncoders();
             count++;
         }
     }
@@ -96,10 +99,10 @@ public class AutoBot extends Robot{
     public void backward(int ticks) {
         telemetry.addLine(""+(Math.abs(topLeft.getCurrentPosition()) < ticks));
         if(Math.abs(topLeft.getCurrentPosition()) < ticks) {
-            topLeft.setPower(1.00);
-            botLeft.setPower(1.00);
-            topRight.setPower(-1.00);
-            botRight.setPower(-1.00);
+            topLeft.setPower(.60);
+            botLeft.setPower(.60);
+            topRight.setPower(-.60);
+            botRight.setPower(-.60);
         }
         else {
             topLeft.setPower(0);
@@ -146,13 +149,13 @@ public class AutoBot extends Robot{
     }
 
     public void forwardCM(int cm){
-        double ticksPerCM = 730 /(4*Math.PI);
+        double ticksPerCM = 730 /(10.16*Math.PI);
         int ticks = (int)ticksPerCM * cm;
         forward(ticks);
     }
 
     public void backwardCM(int cm){
-        double ticksPerCM = 730 /(4*Math.PI);
+        double ticksPerCM = 730 /(10.16*Math.PI);
         int ticks = (int)ticksPerCM * cm;
         backward(ticks);
     }
@@ -267,46 +270,52 @@ public class AutoBot extends Robot{
     }
 
     public int[] countStones() {
-        int[] stones = {0,0,0,0,0,0};
+
         if (tfod != null) {
-            List<Recognition> updatedRecognitions = tfod.getUpdatedRecognitions();
-            if (updatedRecognitions != null) {
-                for (Recognition recognition : updatedRecognitions) {
-                    for(int i = 0; i < stones.length; i++){
-                        if(stones[i] == 0){
-                            if(recognition.getLabel().equals(LABEL_FIRST_ELEMENT)){
+            List<Recognition> updatedRecognitions = tfod.getRecognitions();
+                if(i < 6){
+                    if(recognitionHelper) //we good fam
+                    {
+                        if (updatedRecognitions.size() == 1) {
+                            if (updatedRecognitions.get(0).getLabel().equals(LABEL_FIRST_ELEMENT)) {
                                 stones[i] = 1;
-                            }
-                            else if(recognition.getLabel().equals(LABEL_SECOND_ELEMENT)){
+                            } else if (updatedRecognitions.get(0).getLabel().equals(LABEL_SECOND_ELEMENT)) {
                                 stones[i] = 2;
                             }
+                            i++;
+                            recognitionHelper = false;
+                            //at this point, the block was recognized and it's data was inserted into the int array stones[]
+                            //we make recognitionHelper false until the space between 2 blocks is reached, then we make it true
                         }
+                    }
+                    else
+                    {
+                        if(updatedRecognitions.size()==2)
+                            recognitionHelper = true;
                     }
                 }
             }
-        }
         return stones;
     }
 
     public boolean SkyStonesLocation1(){
         boolean output = false;
         if (tfod != null) {
-            List<Recognition> updatedRecognitions = tfod.getUpdatedRecognitions();
-            if (updatedRecognitions != null) {
-                for (Recognition recognition : updatedRecognitions) {
-                    if(recognition.getLabel().equals(LABEL_SECOND_ELEMENT)){
-                        float middlePointBlock = (recognition.getLeft() + recognition.getRight())/2;
-                        float middlePointImage = (recognition.getImageWidth()/2);
-                        //Middle of detection rectangle should within a range of 10 of the middle of image
-                        if(middlePointBlock > middlePointImage - 10 && middlePointBlock < middlePointImage + 10){
-                            telemetry.addLine("FOUND SKYSTONE ---- STOOOOOOP :)");
-                            output = true;
-                        }
-                        else{
-                            telemetry.addLine("KEEEP GOING :(");
-                            output = false;
-                        }
+            List<Recognition> recognition = tfod.getRecognitions();
+            if(recognition.size() == 1){
+                if(recognition.get(0).getLabel().equals(LABEL_SECOND_ELEMENT)){
+                    float middlePointBlock = (recognition.get(0).getLeft() + recognition.get(0).getRight())/2;
+                    float middlePointImage = (recognition.get(0).getImageWidth()/2);
+                    //Middle of detection rectangle should within a range of 10 of the middle of image
+                    if(middlePointBlock > middlePointImage - 30 && middlePointBlock < middlePointImage + 30){
+                        telemetry.addLine("FOUND SKYSTONE ---- STOOOOOOP :)");
+                        output = true;
                     }
+                    else{
+                        telemetry.addLine("KEEEP GOING :(");
+                        output = false;
+                    }
+                    telemetry.update();
                 }
             }
         }
@@ -337,7 +346,7 @@ public class AutoBot extends Robot{
     private void initTfod() {
         int tfodMonitorViewId = hwm.appContext.getResources().getIdentifier("tfodMonitorViewId", "id", hwm.appContext.getPackageName());
         TFObjectDetector.Parameters tfodParameters = new TFObjectDetector.Parameters(tfodMonitorViewId);
-        tfodParameters.minimumConfidence = 0.74;//this will change (.74-.75)
+        tfodParameters.minimumConfidence = 0.65;//this will change (.74-.75)
         tfod = ClassFactory.getInstance().createTFObjectDetector(tfodParameters, vuforia);
         tfod.loadModelFromAsset(TFOD_MODEL_ASSET, LABEL_FIRST_ELEMENT, LABEL_SECOND_ELEMENT);
     }

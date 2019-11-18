@@ -81,6 +81,7 @@ public class TeleBot extends Robot {
 
         try{
             potato = hwm.get(Servo.class, "potato");
+            potato.setDirection(Servo.Direction.REVERSE);
             potato.setPosition(0);
         }
         catch(Exception e ){
@@ -237,11 +238,11 @@ public class TeleBot extends Robot {
         if (gamepad.y)
         {
 
-            potato.setPosition(.5);
+            potato.setPosition(1);
 
         }
         if(gamepad.b){
-            potato.setPosition(1);
+            potato.setPosition(0);
         }
     }
 

@@ -9,12 +9,12 @@ import org.firstinspires.ftc.teamcode.Helper.AutoBot;
 @Autonomous(name = "TestDetectingBlock")
 public class TestDetectingBlock extends OpMode {
 
-    AutoBot robot;
+    AutoBotVu robot;
 
     @Override
     public void init() {
         telemetry.addLine("init");
-        robot = new AutoBot(hardwareMap, telemetry);
+        robot = new AutoBotVu(hardwareMap, telemetry);
         robot.initVu();
         telemetry.update();
     }
@@ -27,8 +27,8 @@ public class TestDetectingBlock extends OpMode {
     @Override
     public void start() {
         telemetry.addLine("start");
-        robot.setUpWheels();
-        robot.setUpLiftMotor();
+        //robot.setUpWheels();
+        //robot.setUpLiftMotor();
         telemetry.update();
     }
 
@@ -36,16 +36,18 @@ public class TestDetectingBlock extends OpMode {
     public void loop() {
         int count = robot.count;
         telemetry.addLine("loop " + count);
-        displayArray(robot.countStones());
+        robot.loopVu();
+        //displayArray(robot.countStones());
+        //robot.SkyStonesLocation1();
         if(count == 0) {
             //robot.resetEncoders();
-            robot.SkyStonesLocation1();
+
            //continuousBackward(robot.SkyStonesLocation1());
         }
         else if(count == 1){
 
         }
-        robot.printEncoders();
+        //robot.printEncoders();
         telemetry.update();
     }
 
