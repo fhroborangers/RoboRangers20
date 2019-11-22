@@ -226,11 +226,11 @@ public class TeleBot extends Robot {
         else if(gamepad.x){
             claw.setPosition(1);
         }
-        if(gamepad.right_bumper){
-            movingClaw.setPosition(1);
+        if(gamepad.left_bumper){
+            movingClaw.setPosition(1/24);
         }
-        else if(gamepad.left_bumper) {
-            movingClaw.setPosition(.5);
+        else if(gamepad.right_bumper) {
+            movingClaw.setPosition(13/24);
         }
 
     }
@@ -265,10 +265,10 @@ public class TeleBot extends Robot {
         }
 
          */
-        if(gamepad.dpad_down) {
+        if(gamepad.dpad_up) {
             liftMotor.setPower(-.4);
         }
-        else if(gamepad.dpad_up){
+        else if(gamepad.dpad_down){
             liftMotor.setPower(.4);
         }
         else{

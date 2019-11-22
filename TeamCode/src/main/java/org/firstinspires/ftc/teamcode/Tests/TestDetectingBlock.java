@@ -35,14 +35,12 @@ public class TestDetectingBlock extends OpMode {
     @Override
     public void loop() {
         int count = robot.count;
-        telemetry.addLine("loop " + count);
-        robot.loopVu();
-        //displayArray(robot.countStones());
-        //robot.SkyStonesLocation1();
+        telemetry.addLine("loop \n Count: " + count);
+        robot.loopVuUpdated();
         if(count == 0) {
             //robot.resetEncoders();
 
-           //continuousBackward(robot.SkyStonesLocation1());
+           //continuousBackward(robot.loopVuUpdated());
         }
         else if(count == 1){
 

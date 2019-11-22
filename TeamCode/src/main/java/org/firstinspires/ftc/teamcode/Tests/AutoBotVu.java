@@ -469,6 +469,43 @@ public class AutoBotVu extends Robot{
         targetsSkyStone.activate();
     }
 
+
+    public boolean loopVuUpdated() {
+        // check all the trackable targets to see which one (if any) is visible.
+        targetVisible = false;
+        for (VuforiaTrackable trackable : allTrackables) {
+            if (((VuforiaTrackableDefaultListener)trackable.getListener()).isVisible()) {
+                telemetry.addData("Visible Target", trackable.getName());
+                targetVisible = true;
+
+                // getUpdatedRobotLocation() will return null if no new information is available since
+                // the last time that call was made, or if the trackable is not currently visible.
+                OpenGLMatrix robotLocationTransform = ((VuforiaTrackableDefaultListener)trackable.getListener()).getUpdatedRobotLocation();
+                if (robotLocationTransform != null) {
+                    lastLocation = robotLocationTransform;
+                }
+                break;
+            }
+        }
+
+        if(targetVisible) {
+            VectorF translation = lastLocation.getTranslation();
+            float distanceFromCenter = translation.get(0) * mmPerInch * 10;
+            if(distanceFromCenter > -5 && distanceFromCenter < 5){
+                telemetry.addLine("Stop, target in sight");
+                return true;
+            }
+            else{
+                telemetry.addLine("Go, target out of view");
+                return false;
+            }
+        }
+        telemetry.addLine("Go");
+        return false;
+    }
+
+
+
     public void loopVu(){
         // check all the trackable targets to see which one (if any) is visible.
         targetVisible = false;
