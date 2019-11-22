@@ -2,6 +2,8 @@ package org.firstinspires.ftc.teamcode.Helper;
 
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
+import com.qualcomm.robotcore.hardware.Servo;
+
 import org.firstinspires.ftc.robotcore.external.ClassFactory;
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
@@ -12,21 +14,16 @@ import java.util.List;
 
 public class AutoBot extends Robot{
 
-    private static final String TFOD_MODEL_ASSET = "Skystone.tflite";
-    private static final String LABEL_FIRST_ELEMENT = "Stone";
-    private static final String LABEL_SECOND_ELEMENT = "Skystone";
-    private static final String VUFORIA_KEY = "ATMeJeb/////AAAAGaZ47DzTRUyOhcXnfJD+z89ATBWAF+fi+oOutLvXaf0YT/RPuf2mu6VJsJowCDiWiOzGMHUjXKsLBqA4Ziar76oZY/juheUactiQaY6Z3qPHnGmchAMlYuqgKErvggTuqmFca8VvTjtB6YOheJmAbllTDTaCudODpnIDkuFNTa36WCTr4L8HcCnIsB7bjF8pZoivYEBwPkfCVtfAiEpqxbyDAZgNXnuCyp6v/oi3FYZbp7JkFVorcM182+q0PVN5gIr14SKEMlDcDFDiv/sQwNeQOs5iNBd1OSkCoTe9CYbdmtE0gUXxKN2w9NqwATYC6YRJP9uoopxqmr9zkepI10peh2/RnU6pHOmR0KKRAVh8";
-    private VuforiaLocalizer vuforia;
-    private TFObjectDetector tfod;
+    //private static final String VUFORIA_KEY =
+    //        "ATMeJeb/////AAAAGaZ47DzTRUyOhcXnfJD+z89ATBWAF+fi+oOutLvXaf0YT/RPuf2mu6VJsJowCDiWiOzGMHUjXKsLBqA4Ziar76oZY/juheUactiQaY6Z3qPHnGmchAMlYuqgKErvggTuqmFca8VvTjtB6YOheJmAbllTDTaCudODpnIDkuFNTa36WCTr4L8HcCnIsB7bjF8pZoivYEBwPkfCVtfAiEpqxbyDAZgNXnuCyp6v/oi3FYZbp7JkFVorcM182+q0PVN5gIr14SKEMlDcDFDiv/sQwNeQOs5iNBd1OSkCoTe9CYbdmtE0gUXxKN2w9NqwATYC6YRJP9uoopxqmr9zkepI10peh2/RnU6pHOmR0KKRAVh8";
     public int count = 0;
-    private int[] stones = {0,0,0,0,0,0};
-    private int i = 0;
-    private boolean recognitionHelper = true;
+    public int backwardEncoder = 0;
 
     public AutoBot(HardwareMap hardwareMap, Telemetry tele) {
         super(hardwareMap, tele);
     }
 
+    //SetUp Methods
     public void setUpWheels() {
         try {
             topLeft = hwm.get(DcMotor.class, "topLeft");
@@ -76,6 +73,32 @@ public class AutoBot extends Robot{
         }
     }
 
+    public void setUpClawServos(){
+        try {
+            claw = hwm.get(Servo.class, "claw");
+
+        } catch (Exception e) {
+            telemetry.addLine("claw : ERROR");
+        }
+        try {
+            movingClaw = hwm.get(Servo.class, "movingClaw");
+
+        } catch (Exception e) {
+            telemetry.addLine("movingClaw : ERROR");
+        }
+
+        try{
+            potato = hwm.get(Servo.class, "potato");
+            potato.setDirection(Servo.Direction.REVERSE);
+            potato.setPosition(0);
+        }
+        catch(Exception e ){
+            telemetry.addLine("potato : error");
+        }
+
+    }
+
+    //Mechanical Movement Methods
     public void forward(int ticks){
         telemetry.addLine(""+(Math.abs(topLeft.getCurrentPosition()) < ticks));
         if(Math.abs(topLeft.getCurrentPosition()) < ticks) {
@@ -90,12 +113,11 @@ public class AutoBot extends Robot{
             botLeft.setPower(0);
             topRight.setPower(0);
             botRight.setPower(0);
-            //resetEncoders();
+            resetEncoders();
             count++;
         }
     }
 
-    //param is negative number
     public void backward(int ticks) {
         telemetry.addLine(""+(Math.abs(topLeft.getCurrentPosition()) < ticks));
         if(Math.abs(topLeft.getCurrentPosition()) < ticks) {
@@ -171,8 +193,7 @@ public class AutoBot extends Robot{
         rotateRight(degrees*10);
     }
 
-    public void strafeLeft(int ticks)
-    {
+    public void strafeLeft(int ticks) {
         if(topLeft.getCurrentPosition() < ticks) {
             topLeft.setPower(1.00);
             botLeft.setPower(-1.00);
@@ -206,16 +227,91 @@ public class AutoBot extends Robot{
         }
     }
 
+    public void booleanForward(boolean detected){
+        if (!detected) {
+            topLeft.setPower(-.60);
+            botLeft.setPower(-.60);
+            topRight.setPower(.60);
+            botRight.setPower(.60);
+        }
+        else{
+            topLeft.setPower(0);
+            botLeft.setPower(0);
+            topRight.setPower(0);
+            botRight.setPower(0);
+            resetEncoders();
+            count++;
+        }
+    }
+
+    public void booleanBackward(boolean detected){
+        if (!detected) {
+            topLeft.setPower(.60);
+            botLeft.setPower(.60);
+            topRight.setPower(-.60);
+            botRight.setPower(-.60);
+        }
+        else{
+            topLeft.setPower(0);
+            botLeft.setPower(0);
+            topRight.setPower(0);
+            botRight.setPower(0);
+            backwardEncoder = topLeft.getCurrentPosition();
+            resetEncoders();
+            count++;
+        }
+    }
+
+    public void moveLiftUp(int encoder){
+        if(Math.abs(liftMotor.getCurrentPosition()) < encoder){
+            liftMotor.setPower(0.5);
+        }
+        else{
+            liftMotor.setPower(0);
+            resetEncoders();
+            count++;
+        }
+    }
+
+    public void moveLiftDown(int encoder){
+        if(Math.abs(liftMotor.getCurrentPosition()) < encoder){
+            liftMotor.setPower(-0.5);
+        }
+        else{
+            liftMotor.setPower(0);
+            resetEncoders();
+            count++;
+        }
+    }
+
+    public void openClaw(){
+        claw.setPosition(1);
+    }
+
+    public void closeClaw(){
+        claw.setPosition(0);
+    }
+
+    public void openClawArm(){
+        potato.setPosition(1);
+    }
+
+    public void closeClawArm(){
+        potato.setPosition(0);
+    }
+
+    //Handle Encoders
     public void resetEncoders(){
         topLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         botLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         topRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         botRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        liftMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         topLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         botLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         topRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         botRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        //Need to add liftMotor once second Expansion Hub is added
+        liftMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
     }
 
     public void printEncoders(){
@@ -223,134 +319,19 @@ public class AutoBot extends Robot{
         telemetry.addLine("BotLeft Encoders: " + botLeft.getCurrentPosition());
         telemetry.addLine("TopRight Encoders: " + topRight.getCurrentPosition());
         telemetry.addLine("BotRight Encoders: " + botRight.getCurrentPosition());
-        //Need to add liftMotor once second Expansion Hub is added
+        telemetry.addLine("Lift Encoders: " + liftMotor.getCurrentPosition());
     }
 
-    public void initVu(){
-        initVuforia();
+    //Vuforia Methods
+    public void initVuforia(){
 
-        if (ClassFactory.getInstance().canCreateTFObjectDetector()) {
-            initTfod();
-        } else {
-            telemetry.addData("Sorry!", "This device is not compatible with TFOD");
-        }
-
-        /**
-         * Activate TensorFlow Object Detection before we wait for the start command.
-         * Do it here so that the Camera Stream window will have the TensorFlow annotations visible.
-         **/
-        if (tfod != null) {
-            tfod.activate();
-        }
     }
 
-    public void loopVu(){
-        if (tfod != null) {
-            // getUpdatedRecognitions() will return null if no new information is available since
-            // the last time that call was made.
-            List<Recognition> updatedRecognitions = tfod.getUpdatedRecognitions();
-            if (updatedRecognitions != null) {
-                if(updatedRecognitions.size() == 1){
-                    telemetry.addLine("YAYAAAAAAAAAAAAY");
-                }
-                telemetry.addData("# Object Detected", updatedRecognitions.size());
-
-                // step through the list of recognitions and display boundary info.
-                int i = 0;
-                for (Recognition recognition : updatedRecognitions) {
-                    telemetry.addData(String.format("label (%d)", i), recognition.getLabel());
-                    telemetry.addData(String.format("  left,top (%d)", i), "%.03f , %.03f",
-                            recognition.getLeft(), recognition.getTop());
-                    telemetry.addData(String.format("  right,bottom (%d)", i), "%.03f , %.03f",
-                            recognition.getRight(), recognition.getBottom());
-                }
-                telemetry.update();
-            }
-        }
+    public boolean loopVuforia(){
+        return true;
     }
 
-    public int[] countStones() {
+    public void stopVuforia(){
 
-        if (tfod != null) {
-            List<Recognition> updatedRecognitions = tfod.getRecognitions();
-                if(i < 6){
-                    if(recognitionHelper) //we good fam
-                    {
-                        if (updatedRecognitions.size() == 1) {
-                            if (updatedRecognitions.get(0).getLabel().equals(LABEL_FIRST_ELEMENT)) {
-                                stones[i] = 1;
-                            } else if (updatedRecognitions.get(0).getLabel().equals(LABEL_SECOND_ELEMENT)) {
-                                stones[i] = 2;
-                            }
-                            i++;
-                            recognitionHelper = false;
-                            //at this point, the block was recognized and it's data was inserted into the int array stones[]
-                            //we make recognitionHelper false until the space between 2 blocks is reached, then we make it true
-                        }
-                    }
-                    else
-                    {
-                        if(updatedRecognitions.size()==2)
-                            recognitionHelper = true;
-                    }
-                }
-            }
-        return stones;
     }
-
-    public boolean SkyStonesLocation1(){
-        boolean output = false;
-        if (tfod != null) {
-            List<Recognition> recognition = tfod.getRecognitions();
-            if(recognition.size() == 1){
-                if(recognition.get(0).getLabel().equals(LABEL_SECOND_ELEMENT)){
-                    float middlePointBlock = (recognition.get(0).getLeft() + recognition.get(0).getRight())/2;
-                    float middlePointImage = (recognition.get(0).getImageWidth()/2);
-                    //Middle of detection rectangle should within a range of 10 of the middle of image
-                    if(middlePointBlock > middlePointImage - 30 && middlePointBlock < middlePointImage + 30){
-                        telemetry.addLine("FOUND SKYSTONE ---- STOOOOOOP :)");
-                        output = true;
-                    }
-                    else{
-                        telemetry.addLine("KEEEP GOING :(");
-                        output = false;
-                    }
-                    telemetry.update();
-                }
-            }
-        }
-        return output;
-    }
-
-    /**
-     * Initialize the Vuforia localization engine.
-     */
-    private void initVuforia() {
-        /*
-         * Configure Vuforia by creating a Parameter object, and passing it to the Vuforia engine.
-         */
-        VuforiaLocalizer.Parameters parameters = new VuforiaLocalizer.Parameters();
-
-        parameters.vuforiaLicenseKey = VUFORIA_KEY;
-        parameters.cameraDirection = VuforiaLocalizer.CameraDirection.BACK;
-
-        //  Instantiate the Vuforia engine
-        vuforia = ClassFactory.getInstance().createVuforia(parameters);
-
-        // Loading trackables is not necessary for the TensorFlow Object Detection engine.
-    }
-
-    /**
-     * Initialize the TensorFlow Object Detection engine.
-     */
-    private void initTfod() {
-        int tfodMonitorViewId = hwm.appContext.getResources().getIdentifier("tfodMonitorViewId", "id", hwm.appContext.getPackageName());
-        TFObjectDetector.Parameters tfodParameters = new TFObjectDetector.Parameters(tfodMonitorViewId);
-        tfodParameters.minimumConfidence = 0.65;//this will change (.74-.75)
-        tfod = ClassFactory.getInstance().createTFObjectDetector(tfodParameters, vuforia);
-        tfod.loadModelFromAsset(TFOD_MODEL_ASSET, LABEL_FIRST_ELEMENT, LABEL_SECOND_ELEMENT);
-    }
-
-
-
 }

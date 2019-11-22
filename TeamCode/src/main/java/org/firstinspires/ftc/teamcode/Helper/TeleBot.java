@@ -64,8 +64,7 @@ public class TeleBot extends Robot {
         }
     }
 
-    public void setUpServos()
-    {
+    public void setUpServos() {
         try {
             claw = hwm.get(Servo.class, "claw");
 
@@ -131,8 +130,7 @@ public class TeleBot extends Robot {
         }
     }
 
-    public void moveWithAngle(Gamepad gamepad)
-    {
+    public void moveWithAngle(Gamepad gamepad) {
         //Getting Direction
         //Possible Values
         // U = Up, D = Down, L = Left, R = Right, N = None/No Movement, r = rotate right, l = rotate left
@@ -218,8 +216,7 @@ public class TeleBot extends Robot {
 
     }
 
-    public void moveClaw(Gamepad gamepad)
-    {
+    public void moveClaw(Gamepad gamepad) {
         if(gamepad.a){
             claw.setPosition(0);
         }
@@ -234,6 +231,7 @@ public class TeleBot extends Robot {
         }
 
     }
+
     public void potatoServo(Gamepad gamepad) {
         if (gamepad.y)
         {
@@ -277,6 +275,5 @@ public class TeleBot extends Robot {
 
 
     }
-
 
 }
