@@ -154,6 +154,37 @@ public class AutoBot extends Robot{
         }
     }
 
+    public void forwardTest(int ticks){
+        telemetry.addLine(""+(Math.abs(topLeft.getCurrentPosition()) < ticks));
+        int power = 0;
+        if(ticks > (730 * 2)) {
+            int x = ticks - (ticks % (730 * 2));
+            if ((Math.abs(topLeft.getCurrentPosition()) < ticks - x)) {
+                power = 1;
+            } else if (Math.abs(topLeft.getCurrentPosition()) > ticks - x && Math.abs(topLeft.getCurrentPosition()) < ticks) {
+                power = topLeft.getCurrentPosition() / x;
+            }
+        }
+        else{
+            power = ticks / (730 * 2);
+        }
+        if(Math.abs(topLeft.getCurrentPosition()) < ticks) {
+            topLeft.setPower(-power);
+            botLeft.setPower(-power);
+            topRight.setPower(power);
+            botRight.setPower(power);
+        }
+        else{
+            telemetry.addLine("here lmao");
+            topLeft.setPower(0);
+            botLeft.setPower(0);
+            topRight.setPower(0);
+            botRight.setPower(0);
+            resetEncoders();
+            count++;
+        }
+    }
+
     public void backward(int ticks) {
         telemetry.addLine(""+(Math.abs(topLeft.getCurrentPosition()) < ticks));
         if(Math.abs(topLeft.getCurrentPosition()) < ticks) {
