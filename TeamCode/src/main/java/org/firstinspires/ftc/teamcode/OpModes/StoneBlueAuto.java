@@ -43,6 +43,9 @@ public class StoneBlueAuto extends OpMode {
 
         telemetry.addLine("Should Robot Stop: " + robot.loopVuforia());
 
+        if(count == 0){
+            robot.booleanBackward(robot.loopVuforia());
+        }
         /*
         if(count == 0) {
             robot.booleanBackward(robot.loopVuforia());

@@ -73,6 +73,7 @@ public class TeleBot extends Robot {
         }
         try {
             movingClaw = hardwareMap.get(Servo.class, "movingClaw");
+            movingClaw.setPosition(13/24);
 
         } catch (Exception e) {
             telemetry.addLine("movingClaw : ERROR");
@@ -201,8 +202,8 @@ public class TeleBot extends Robot {
         else if(direction=='l') {
             topLeft.setPower(gamepad.right_trigger);
             botLeft.setPower(gamepad.right_trigger);
-            botRight.setPower(gamepad.right_trigger);
-            topRight.setPower(gamepad.right_trigger);
+            botRight.setPower(-gamepad.right_trigger);
+            topRight.setPower(-gamepad.right_trigger);
         }
         else if(direction == 'N') {
             topLeft.setPower(0);
@@ -224,7 +225,7 @@ public class TeleBot extends Robot {
             claw.setPosition(1);
         }
         if(gamepad.left_bumper){
-            movingClaw.setPosition(1/24);
+            movingClaw.setPosition(.3);
         }
         else if(gamepad.right_bumper) {
             movingClaw.setPosition(13/24);
@@ -245,33 +246,20 @@ public class TeleBot extends Robot {
     }
 
     public void moveLiftMotor(Gamepad gamepad) {
-        /*
-        if (gamepad.left_trigger > 0 && gamepad.right_trigger == 0) {
-             liftMotor.setPower(-gamepad.left_trigger);
-            }
 
-        else if(gamepad.left_trigger == 0){
-            liftMotor.setPower(0);
-            telemetry.addLine("LEFT 0");
+        if (gamepad.left_trigger != 0 && gamepad.right_trigger == 0) {
+            liftMotor.setPower(-gamepad.left_trigger);
         }
-        if (gamepad.right_trigger > 0 && gamepad.left_trigger == 0) {
+        else if (gamepad.right_trigger != 0 && gamepad.left_trigger == 0) {
             liftMotor.setPower(gamepad.right_trigger);
         }
-        else{
+        else if(gamepad.right_trigger == 0 && gamepad.left_trigger == 0){
             liftMotor.setPower(0);
             telemetry.addLine("RIGHT 0");
         }
 
-         */
-        if(gamepad.dpad_up) {
-            liftMotor.setPower(-.4);
-        }
-        else if(gamepad.dpad_down){
-            liftMotor.setPower(.4);
-        }
-        else{
-            liftMotor.setPower(0);
-        }
+
+
 
 
     }

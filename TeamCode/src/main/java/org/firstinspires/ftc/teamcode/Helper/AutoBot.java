@@ -43,7 +43,7 @@ public class AutoBot extends Robot{
     // Class Members
     private OpenGLMatrix lastLocation = null;
     private VuforiaLocalizer vuforia = null;
-    WebcamName webcamName = null;
+
     private boolean targetVisible = false;
     private float phoneXRotate    = 0;
     private float phoneYRotate    = 0;
@@ -62,6 +62,7 @@ public class AutoBot extends Robot{
     //SetUp Methods
     public void setUpWheels() {
         try {
+            webcam.
             topLeft = hardwareMap.get(DcMotor.class, "topLeft");
             topLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
             topLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
