@@ -40,6 +40,10 @@ public class StoneBlueAuto extends OpMode {
         int count = robot.count;
         int backwardEncoder = robot.backwardEncoder;
         telemetry.addLine("loop " + count);
+
+        telemetry.addLine("Should Robot Stop: " + robot.loopVuforia());
+
+        /*
         if(count == 0) {
             robot.booleanBackward(robot.loopVuforia());
         }
@@ -81,6 +85,7 @@ public class StoneBlueAuto extends OpMode {
         }
         robot.printEncoders();
         telemetry.update();
+        */
     }
 
 

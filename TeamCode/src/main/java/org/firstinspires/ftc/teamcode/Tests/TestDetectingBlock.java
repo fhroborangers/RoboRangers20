@@ -37,15 +37,6 @@ public class TestDetectingBlock extends OpMode {
         int count = robot.count;
         telemetry.addLine("loop \n Count: " + count);
         robot.loopVuUpdated();
-        if(count == 0) {
-            //robot.resetEncoders();
-
-           //continuousBackward(robot.loopVuUpdated());
-        }
-        else if(count == 1){
-
-        }
-        //robot.printEncoders();
         telemetry.update();
     }
 
@@ -71,15 +62,6 @@ public class TestDetectingBlock extends OpMode {
             robot.resetEncoders();
             robot.count++;
         }
-    }
-
-    public void displayArray(int[] array){
-        String display = "Stones : [ ";
-        for(int x: array){
-            display = display + x + " ";
-        }
-        display = display + "]";
-        telemetry.addLine(display);
     }
 
 }

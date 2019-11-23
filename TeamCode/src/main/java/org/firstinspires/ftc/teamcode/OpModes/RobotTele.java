@@ -40,6 +40,7 @@ public class RobotTele extends OpMode {
         //robot.moveLiftMotor(gamepad1);
         robot.potatoServo(gamepad1);
         //hi ;)
+        //hi 😁😁😁😁😁😁😁😁😁😁😁😁😁😁😁😁😁😁😁😁😁😁😁😁😁😁😁😁😁😁😁😁😁😁😁😁😁😁😁😁😁😁😁😁😁😁😁😁😁😁😁😁😁😁😁😁😁😁
     }
 
 

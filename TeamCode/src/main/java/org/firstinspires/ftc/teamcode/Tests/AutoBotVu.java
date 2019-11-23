@@ -89,7 +89,7 @@ public class AutoBotVu extends Robot{
 
     public void setUpWheels() {
         try {
-            topLeft = hwm.get(DcMotor.class, "topLeft");
+            topLeft = hardwareMap.get(DcMotor.class, "topLeft");
             topLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
             topLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
             telemetry.addLine("topLeft : OK");
@@ -98,7 +98,7 @@ public class AutoBotVu extends Robot{
         }
 
         try {
-            topRight = hwm.get(DcMotor.class, "topRight");
+            topRight = hardwareMap.get(DcMotor.class, "topRight");
             topRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
             topRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
             telemetry.addLine("topRight : OK");
@@ -107,7 +107,7 @@ public class AutoBotVu extends Robot{
         }
 
         try {
-            botLeft = hwm.get(DcMotor.class, "botLeft");
+            botLeft = hardwareMap.get(DcMotor.class, "botLeft");
             botLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
             botLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
             telemetry.addLine("botLeft : OK");
@@ -116,7 +116,7 @@ public class AutoBotVu extends Robot{
         }
 
         try {
-            botRight = hwm.get(DcMotor.class, "botRight");
+            botRight = hardwareMap.get(DcMotor.class, "botRight");
             botRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
             botRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
             telemetry.addLine("botRight : OK");
@@ -127,7 +127,7 @@ public class AutoBotVu extends Robot{
 
     public void setUpLiftMotor() {
         try {
-            liftMotor = hwm.get(DcMotor.class, "liftMotor");
+            liftMotor = hardwareMap.get(DcMotor.class, "liftMotor");
             liftMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
             liftMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
             telemetry.addLine("liftMotor : OK");
@@ -231,8 +231,7 @@ public class AutoBotVu extends Robot{
         rotateRight(degrees*10);
     }
 
-    public void strafeLeft(int ticks)
-    {
+    public void strafeLeft(int ticks) {
         if(topLeft.getCurrentPosition() < ticks) {
             topLeft.setPower(1.00);
             botLeft.setPower(-1.00);
@@ -292,7 +291,7 @@ public class AutoBotVu extends Robot{
          * We can pass Vuforia the handle to a camera preview resource (on the RC phone);
          * If no camera monitor is desired, use the parameter-less constructor instead (commented out below).
          */
-        int cameraMonitorViewId = hwm.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hwm.appContext.getPackageName());
+        int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
         VuforiaLocalizer.Parameters parameters = new VuforiaLocalizer.Parameters(cameraMonitorViewId);
 
         // VuforiaLocalizer.Parameters parameters = new VuforiaLocalizer.Parameters();
@@ -469,7 +468,6 @@ public class AutoBotVu extends Robot{
         targetsSkyStone.activate();
     }
 
-
     public boolean loopVuUpdated() {
         // check all the trackable targets to see which one (if any) is visible.
         targetVisible = false;
@@ -503,8 +501,6 @@ public class AutoBotVu extends Robot{
         telemetry.addLine("Go");
         return false;
     }
-
-
 
     public void loopVu(){
         // check all the trackable targets to see which one (if any) is visible.
@@ -540,6 +536,5 @@ public class AutoBotVu extends Robot{
         }
         telemetry.update();
     }
-
 }
 

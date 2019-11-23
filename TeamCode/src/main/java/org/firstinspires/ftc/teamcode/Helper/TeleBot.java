@@ -11,13 +11,13 @@ import java.util.concurrent.ExecutionException;
 
 public class TeleBot extends Robot {
 
-    public TeleBot(HardwareMap hwm, Telemetry tele){
-        super(hwm, tele);
+    public TeleBot(HardwareMap hardwareMap, Telemetry tele){
+        super(hardwareMap, tele);
     }
 
     public void setUpWheels() {
         try {
-            topLeft = hwm.get(DcMotor.class, "topLeft");
+            topLeft = hardwareMap.get(DcMotor.class, "topLeft");
             topLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
             topLeft.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
             telemetry.addLine("topLeft : OK");
@@ -26,7 +26,7 @@ public class TeleBot extends Robot {
         }
 
         try {
-            topRight = hwm.get(DcMotor.class, "topRight");
+            topRight = hardwareMap.get(DcMotor.class, "topRight");
             topRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
             topRight.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
             telemetry.addLine("topRight : OK");
@@ -35,7 +35,7 @@ public class TeleBot extends Robot {
         }
 
         try {
-            botLeft = hwm.get(DcMotor.class, "botLeft");
+            botLeft = hardwareMap.get(DcMotor.class, "botLeft");
             botLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
             botLeft.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
             telemetry.addLine("botLeft : OK");
@@ -44,7 +44,7 @@ public class TeleBot extends Robot {
         }
 
         try {
-            botRight = hwm.get(DcMotor.class, "botRight");
+            botRight = hardwareMap.get(DcMotor.class, "botRight");
             botRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
             botRight.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
             telemetry.addLine("botRight : OK");
@@ -55,7 +55,7 @@ public class TeleBot extends Robot {
 
     public void setUpLiftMotor(){
         try{
-            liftMotor = hwm.get(DcMotor.class, "liftMotor");
+            liftMotor = hardwareMap.get(DcMotor.class, "liftMotor");
             liftMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
             liftMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
             telemetry.addLine("liftMotor : OK");
@@ -66,20 +66,20 @@ public class TeleBot extends Robot {
 
     public void setUpServos() {
         try {
-            claw = hwm.get(Servo.class, "claw");
+            claw = hardwareMap.get(Servo.class, "claw");
 
         } catch (Exception e) {
             telemetry.addLine("claw : ERROR");
         }
         try {
-            movingClaw = hwm.get(Servo.class, "movingClaw");
+            movingClaw = hardwareMap.get(Servo.class, "movingClaw");
 
         } catch (Exception e) {
             telemetry.addLine("movingClaw : ERROR");
         }
 
         try{
-            potato = hwm.get(Servo.class, "potato");
+            potato = hardwareMap.get(Servo.class, "potato");
             potato.setDirection(Servo.Direction.REVERSE);
             potato.setPosition(0);
         }
