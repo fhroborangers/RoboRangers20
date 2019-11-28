@@ -135,9 +135,10 @@ public class AutoBot extends Robot{
     }
 
     //Mechanical Movement Methods
+
     public void forward(int ticks){
-        telemetry.addLine(""+(Math.abs(topLeft.getCurrentPosition()) < ticks));
-        if(Math.abs(topLeft.getCurrentPosition()) < ticks) {
+        //telemetry.addLine(""+(Math.abs(topLeft.getCurrentPosition()) < ticks));
+        if(Math.abs(botLeft.getCurrentPosition()) < ticks) {
             topLeft.setPower(-.60);
             botLeft.setPower(-.60);
             topRight.setPower(.60);
@@ -145,6 +146,58 @@ public class AutoBot extends Robot{
         }
         else{
             telemetry.addLine("here lmao");
+            topLeft.setPower(0);
+            botLeft.setPower(0);
+            topRight.setPower(0);
+            botRight.setPower(0);
+            resetEncoders();
+            count++;
+        }
+    }
+
+    public void backward(int ticks) {
+        telemetry.addLine(""+(Math.abs(topLeft.getCurrentPosition()) < ticks));
+        if(Math.abs(botLeft.getCurrentPosition()) < ticks) {
+            topLeft.setPower(.60);
+            botLeft.setPower(.60);
+            topRight.setPower(-.60);
+            botRight.setPower(-.60);
+        }
+        else {
+            topLeft.setPower(0);
+            botLeft.setPower(0);
+            topRight.setPower(0);
+            botRight.setPower(0);
+            resetEncoders();
+            count++;
+        }
+    }
+
+    public void rotateLeft(int ticks){
+        if(Math.abs(botLeft.getCurrentPosition()) < ticks) {
+            topLeft.setPower(1.00);
+            botLeft.setPower(1.00);
+            topRight.setPower(1.00);
+            botRight.setPower(1.00);
+        }
+        else {
+            topLeft.setPower(0);
+            botLeft.setPower(0);
+            topRight.setPower(0);
+            botRight.setPower(0);
+            resetEncoders();
+            count++;
+        }
+    }
+
+    public void rotateRight(int ticks){
+        if(Math.abs(botLeft.getCurrentPosition()) < ticks) {
+            topLeft.setPower(-1.00);
+            botLeft.setPower(-1.00);
+            topRight.setPower(-1.00);
+            botRight.setPower(-1.00);
+        }
+        else {
             topLeft.setPower(0);
             botLeft.setPower(0);
             topRight.setPower(0);
@@ -185,58 +238,6 @@ public class AutoBot extends Robot{
         }
     }
 
-    public void backward(int ticks) {
-        telemetry.addLine(""+(Math.abs(topLeft.getCurrentPosition()) < ticks));
-        if(Math.abs(topLeft.getCurrentPosition()) < ticks) {
-            topLeft.setPower(.60);
-            botLeft.setPower(.60);
-            topRight.setPower(-.60);
-            botRight.setPower(-.60);
-        }
-        else {
-            topLeft.setPower(0);
-            botLeft.setPower(0);
-            topRight.setPower(0);
-            botRight.setPower(0);
-            resetEncoders();
-            count++;
-        }
-    }
-
-    public void rotateLeft(int ticks){
-        if(Math.abs(topLeft.getCurrentPosition()) < ticks) {
-            topLeft.setPower(1.00);
-            botLeft.setPower(1.00);
-            topRight.setPower(1.00);
-            botRight.setPower(1.00);
-        }
-        else {
-            topLeft.setPower(0);
-            botLeft.setPower(0);
-            topRight.setPower(0);
-            botRight.setPower(0);
-            resetEncoders();
-            count++;
-        }
-    }
-
-    public void rotateRight(int ticks){
-        if(Math.abs(topLeft.getCurrentPosition()) < ticks) {
-            topLeft.setPower(-1.00);
-            botLeft.setPower(-1.00);
-            topRight.setPower(-1.00);
-            botRight.setPower(-1.00);
-        }
-        else {
-            topLeft.setPower(0);
-            botLeft.setPower(0);
-            topRight.setPower(0);
-            botRight.setPower(0);
-            resetEncoders();
-            count++;
-        }
-    }
-
     public void forwardCM(int cm){
         double ticksPerCM = 730 /(10.16*Math.PI);
         int ticks = (int)ticksPerCM * cm;
@@ -261,7 +262,7 @@ public class AutoBot extends Robot{
     }
 
     public void strafeLeft(int ticks) {
-        if(topLeft.getCurrentPosition() < ticks) {
+        if(botLeft.getCurrentPosition() < ticks) {
             topLeft.setPower(1.00);
             botLeft.setPower(-1.00);
             topRight.setPower(1.00);
@@ -278,7 +279,7 @@ public class AutoBot extends Robot{
     }
 
     public void strafeRight(int ticks) {
-        if(topLeft.getCurrentPosition() > -ticks) {
+        if(botLeft.getCurrentPosition() > -ticks) {
             topLeft.setPower(-1.00);
             botLeft.setPower(1.00);
             topRight.setPower(-1.00);

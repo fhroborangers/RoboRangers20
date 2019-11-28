@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode.Tests;
 
+import com.disnodeteam.dogecv.detectors.skystone.SkystoneDetector;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
@@ -15,6 +16,9 @@ import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackables;
 import org.firstinspires.ftc.robotcore.external.tfod.Recognition;
 import org.firstinspires.ftc.robotcore.external.tfod.TFObjectDetector;
 import org.firstinspires.ftc.teamcode.Helper.Robot;
+import org.openftc.easyopencv.OpenCvCamera;
+import org.openftc.easyopencv.OpenCvCameraRotation;
+import org.openftc.easyopencv.OpenCvInternalCamera;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -79,9 +83,13 @@ public class AutoBotVu extends Robot{
     private float phoneZRotate    = 0;
 
     List<VuforiaTrackable> allTrackables = new ArrayList<VuforiaTrackable>();
+    VuforiaTrackables targetsSkyStone = this.vuforia.loadTrackablesFromAsset("Skystone");
+
+    //DogeCV Stuff
+    private OpenCvCamera phoneCam;
+    private SkystoneDetector skyStoneDetector;
 
     public int count = 0;
-    private boolean recognitionHelper = true;
 
     public AutoBotVu(HardwareMap hardwareMap, Telemetry tele) {
         super(hardwareMap, tele);
@@ -155,7 +163,6 @@ public class AutoBotVu extends Robot{
         }
     }
 
-    //param is negative number
     public void backward(int ticks) {
         telemetry.addLine(""+(Math.abs(topLeft.getCurrentPosition()) < ticks));
         if(Math.abs(botLeft.getCurrentPosition()) < ticks) {
@@ -265,6 +272,78 @@ public class AutoBotVu extends Robot{
         }
     }
 
+    public void booleanForward(boolean detected){
+        if (!detected) {
+            topLeft.setPower(-.60);
+            botLeft.setPower(-.60);
+            topRight.setPower(.60);
+            botRight.setPower(.60);
+        }
+        else{
+            topLeft.setPower(0);
+            botLeft.setPower(0);
+            topRight.setPower(0);
+            botRight.setPower(0);
+            resetEncoders();
+            count++;
+        }
+    }
+
+    public void booleanBackward(boolean detected){
+        if (!detected) {
+            topLeft.setPower(.40);
+            botLeft.setPower(.40);
+            topRight.setPower(-.40);
+            botRight.setPower(-.40);
+        }
+        else{
+            topLeft.setPower(0);
+            botLeft.setPower(0);
+            topRight.setPower(0);
+            botRight.setPower(0);
+            resetEncoders();
+            count++;
+        }
+    }
+
+    public void moveLiftUp(int encoder){
+        if(Math.abs(liftMotor.getCurrentPosition()) < encoder){
+            liftMotor.setPower(0.5);
+        }
+        else{
+            liftMotor.setPower(0);
+            resetEncoders();
+            count++;
+        }
+    }
+
+    public void moveLiftDown(int encoder){
+        if(Math.abs(liftMotor.getCurrentPosition()) < encoder){
+            liftMotor.setPower(-0.5);
+        }
+        else{
+            liftMotor.setPower(0);
+            resetEncoders();
+            count++;
+        }
+    }
+
+    public void openClaw(){
+        claw.setPosition(1);
+    }
+
+    public void closeClaw(){
+        claw.setPosition(0);
+    }
+
+    public void openClawArm(){
+        potato.setPosition(1);
+    }
+
+    public void closeClawArm(){
+        potato.setPosition(0);
+    }
+
     public void resetEncoders(){
         topLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         botLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -304,7 +383,7 @@ public class AutoBotVu extends Robot{
 
         // Load the data sets for the trackable objects. These particular data
         // sets are stored in the 'assets' part of our application.
-        VuforiaTrackables targetsSkyStone = this.vuforia.loadTrackablesFromAsset("Skystone");
+
 
         VuforiaTrackable stoneTarget = targetsSkyStone.get(0);
         stoneTarget.setName("Stone Target");
@@ -530,23 +609,34 @@ public class AutoBotVu extends Robot{
         telemetry.update();
     }
 
-    public void booleanBackward(boolean detected){
-        if (!detected) {
-            topLeft.setPower(.20);
-            botLeft.setPower(.20);
-            topRight.setPower(-.20);
-            botRight.setPower(-.20);
+    public void stopVuforia(){
+        targetsSkyStone.deactivate();
+    }
+
+    public void initDogeCV(){
+        int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
+        phoneCam = new OpenCvInternalCamera(OpenCvInternalCamera.CameraDirection.BACK, cameraMonitorViewId);
+        phoneCam.openCameraDevice();
+        skyStoneDetector = new SkystoneDetector();
+        phoneCam.setPipeline(skyStoneDetector);
+        phoneCam.startStreaming(320, 240, OpenCvCameraRotation.SIDEWAYS_RIGHT);
+    }
+
+    public boolean loopDogeCV(){
+        double centerX = (skyStoneDetector.foundRectangle().x + skyStoneDetector.foundRectangle().width) / 2;
+        telemetry.addLine("CenterX: " + centerX);
+        if(skyStoneDetector.isDetected()){
+            return true;
         }
         else{
-            topLeft.setPower(0);
-            botLeft.setPower(0);
-            topRight.setPower(0);
-            botRight.setPower(0);
-            //backwardEncoder = topLeft.getCurrentPosition();
-            resetEncoders();
-            count++;
+            return false;
         }
+
     }
-    //public void stopVuforia(){
-       }
+
+    public void stopDogeCV(){
+        phoneCam.stopStreaming();
+        phoneCam.closeCameraDevice();
+    }
+}
 

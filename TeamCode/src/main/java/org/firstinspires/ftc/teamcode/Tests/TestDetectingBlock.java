@@ -60,21 +60,4 @@ public class TestDetectingBlock extends OpMode {
     }
 
 
-    public void continuousBackward(boolean found) {
-        if(!found) {
-            robot.topLeft.setPower(0.5);
-            robot.botLeft.setPower(0.5);
-            robot.topRight.setPower(-0.5);
-            robot.botRight.setPower(-0.5);
-        }
-        else{
-            robot.topLeft.setPower(0);
-            robot.botLeft.setPower(0);
-            robot.topRight.setPower(0);
-            robot.botRight.setPower(0);
-            robot.resetEncoders();
-            robot.count++;
-        }
-    }
-
 }
