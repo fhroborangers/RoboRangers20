@@ -62,7 +62,6 @@ public class AutoBot extends Robot{
     //SetUp Methods
     public void setUpWheels() {
         try {
-            webcam.
             topLeft = hardwareMap.get(DcMotor.class, "topLeft");
             topLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
             topLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
@@ -314,10 +313,10 @@ public class AutoBot extends Robot{
 
     public void booleanBackward(boolean detected){
         if (!detected) {
-            topLeft.setPower(.60);
-            botLeft.setPower(.60);
-            topRight.setPower(-.60);
-            botRight.setPower(-.60);
+            topLeft.setPower(.40);
+            botLeft.setPower(.40);
+            topRight.setPower(-.40);
+            botRight.setPower(-.40);
         }
         else{
             topLeft.setPower(0);

@@ -137,8 +137,8 @@ public class AutoBotVu extends Robot{
     }
 
     public void forward(int ticks){
-        telemetry.addLine(""+(Math.abs(topLeft.getCurrentPosition()) < ticks));
-        if(Math.abs(topLeft.getCurrentPosition()) < ticks) {
+        //telemetry.addLine(""+(Math.abs(topLeft.getCurrentPosition()) < ticks));
+        if(Math.abs(botLeft.getCurrentPosition()) < ticks) {
             topLeft.setPower(-.60);
             botLeft.setPower(-.60);
             topRight.setPower(.60);
@@ -150,7 +150,7 @@ public class AutoBotVu extends Robot{
             botLeft.setPower(0);
             topRight.setPower(0);
             botRight.setPower(0);
-            //resetEncoders();
+            resetEncoders();
             count++;
         }
     }
@@ -158,7 +158,7 @@ public class AutoBotVu extends Robot{
     //param is negative number
     public void backward(int ticks) {
         telemetry.addLine(""+(Math.abs(topLeft.getCurrentPosition()) < ticks));
-        if(Math.abs(topLeft.getCurrentPosition()) < ticks) {
+        if(Math.abs(botLeft.getCurrentPosition()) < ticks) {
             topLeft.setPower(.60);
             botLeft.setPower(.60);
             topRight.setPower(-.60);
@@ -175,7 +175,7 @@ public class AutoBotVu extends Robot{
     }
 
     public void rotateLeft(int ticks){
-        if(Math.abs(topLeft.getCurrentPosition()) < ticks) {
+        if(Math.abs(botLeft.getCurrentPosition()) < ticks) {
             topLeft.setPower(1.00);
             botLeft.setPower(1.00);
             topRight.setPower(1.00);
@@ -192,7 +192,7 @@ public class AutoBotVu extends Robot{
     }
 
     public void rotateRight(int ticks){
-        if(Math.abs(topLeft.getCurrentPosition()) < ticks) {
+        if(Math.abs(botLeft.getCurrentPosition()) < ticks) {
             topLeft.setPower(-1.00);
             botLeft.setPower(-1.00);
             topRight.setPower(-1.00);
@@ -232,7 +232,7 @@ public class AutoBotVu extends Robot{
     }
 
     public void strafeLeft(int ticks) {
-        if(topLeft.getCurrentPosition() < ticks) {
+        if(botLeft.getCurrentPosition() < ticks) {
             topLeft.setPower(1.00);
             botLeft.setPower(-1.00);
             topRight.setPower(1.00);
@@ -249,7 +249,7 @@ public class AutoBotVu extends Robot{
     }
 
     public void strafeRight(int ticks) {
-        if(topLeft.getCurrentPosition() > -ticks) {
+        if(botLeft.getCurrentPosition() > -ticks) {
             topLeft.setPower(-1.00);
             botLeft.setPower(1.00);
             topRight.setPower(-1.00);
@@ -469,7 +469,6 @@ public class AutoBotVu extends Robot{
     }
 
     public boolean loopVuUpdated() {
-        // check all the trackable targets to see which one (if any) is visible.
         targetVisible = false;
         for (VuforiaTrackable trackable : allTrackables) {
             if (((VuforiaTrackableDefaultListener)trackable.getListener()).isVisible()) {
@@ -486,19 +485,13 @@ public class AutoBotVu extends Robot{
             }
         }
 
-        if(targetVisible) {
-            VectorF translation = lastLocation.getTranslation();
-            float distanceFromCenter = translation.get(0) * mmPerInch * 10;
-            if(distanceFromCenter > -5 && distanceFromCenter < 5){
-                telemetry.addLine("Stop, target in sight");
+        if (targetVisible) {
+            VectorF translation = lastLocation.getTranslation(); //In Millimeters, translation.get(0) --> X, translation.get(1) --> Y, translation.get(2) --> Z
+                telemetry.addLine("------------Stop-----------");
                 return true;
-            }
-            else{
-                telemetry.addLine("Go, target out of view");
-                return false;
-            }
         }
-        telemetry.addLine("Go");
+        telemetry.addLine("+++++++++Keep Going+++++++++");
+        telemetry.update();
         return false;
     }
 
@@ -536,5 +529,24 @@ public class AutoBotVu extends Robot{
         }
         telemetry.update();
     }
-}
+
+    public void booleanBackward(boolean detected){
+        if (!detected) {
+            topLeft.setPower(.20);
+            botLeft.setPower(.20);
+            topRight.setPower(-.20);
+            botRight.setPower(-.20);
+        }
+        else{
+            topLeft.setPower(0);
+            botLeft.setPower(0);
+            topRight.setPower(0);
+            botRight.setPower(0);
+            //backwardEncoder = topLeft.getCurrentPosition();
+            resetEncoders();
+            count++;
+        }
+    }
+    //public void stopVuforia(){
+       }
 
