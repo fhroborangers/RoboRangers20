@@ -139,7 +139,7 @@ public class TeleBot extends Robot {
         double angle1 = Math.abs(Math.atan(gamepad.left_stick_y/gamepad.left_stick_x)); //in radians
         double rStickX = gamepad.right_stick_x;
         telemetry.addLine("Angle in Degrees: " + Math.toDegrees(angle1));
-        /*if(angle1 < Math.PI/4){
+        if(angle1 < Math.PI/4){
             if(gamepad.left_stick_x > 0){
                 direction = 'R';
             }
@@ -147,12 +147,12 @@ public class TeleBot extends Robot {
                 direction = 'L';
             }
         }
-        else */if(angle1 > Math.PI/4){
+        else if(angle1 > Math.PI/4){
             if(gamepad.left_stick_y > 0){
-                direction = 'D';
+                direction = 'U';
             }
             else{
-                direction = 'U';
+                direction = 'D';
             }
         }
         else if(rStickX>0) //rotate right
@@ -169,18 +169,18 @@ public class TeleBot extends Robot {
 
 
         if(direction == 'U'){
-            topLeft.setPower(-gamepad.right_trigger);
-            botLeft.setPower(-gamepad.right_trigger);
-            botRight.setPower(gamepad.right_trigger);
-            topRight.setPower(gamepad.right_trigger);
-        }
-        else if(direction == 'D'){
             topLeft.setPower(gamepad.right_trigger);
             botLeft.setPower(gamepad.right_trigger);
             botRight.setPower(-gamepad.right_trigger);
             topRight.setPower(-gamepad.right_trigger);
         }
-        /*else if(direction == 'R'){
+        else if(direction == 'D'){
+            topLeft.setPower(-gamepad.right_trigger);
+            botLeft.setPower(-gamepad.right_trigger);
+            botRight.setPower(gamepad.right_trigger);
+            topRight.setPower(gamepad.right_trigger);
+        }
+        else if(direction == 'R'){
             topLeft.setPower(-gamepad.right_trigger);
             botLeft.setPower(gamepad.right_trigger);
             botRight.setPower(gamepad.right_trigger);
@@ -192,7 +192,7 @@ public class TeleBot extends Robot {
             botLeft.setPower(-gamepad.right_trigger);
             botRight.setPower(-gamepad.right_trigger);
             topRight.setPower(gamepad.right_trigger);
-        }*/
+        }
         else if(direction=='r') {
             topLeft.setPower(-gamepad.right_trigger);
             botLeft.setPower(-gamepad.right_trigger);
@@ -202,8 +202,8 @@ public class TeleBot extends Robot {
         else if(direction=='l') {
             topLeft.setPower(gamepad.right_trigger);
             botLeft.setPower(gamepad.right_trigger);
-            botRight.setPower(gamepad.right_trigger);
-            topRight.setPower(gamepad.right_trigger);
+            botRight.setPower(-gamepad.right_trigger);
+            topRight.setPower(-gamepad.right_trigger);
         }
         else if(direction == 'N') {
             topLeft.setPower(0);
@@ -214,9 +214,6 @@ public class TeleBot extends Robot {
 
         //Using triggers to accelerate
 
-        //hey how's it going
-        telemetry.addData("Was hereL ", "Kim");
-        telemetry.update();
 
     }
 

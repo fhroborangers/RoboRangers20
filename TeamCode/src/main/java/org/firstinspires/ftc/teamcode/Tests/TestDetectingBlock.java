@@ -37,19 +37,7 @@ public class TestDetectingBlock extends OpMode {
     public void loop() {
         int count = robot.count;
         telemetry.addLine("loop \n Count: " + count);
-        robot.printEncoders();
-        if (count == 0){
-            robot.booleanBackward(robot.loopVuUpdated());
-            //telemetry.addLine("wegoodfam? "+robot.loopVuUpdated());
-        }
-        /*
-        else if(count == 1){
-            robot.forwardCM(30);
-        }
-        else if(count == 2){
-
-        }*/
-
+        robot.loopVuUpdated();
         telemetry.update();
     }
 
