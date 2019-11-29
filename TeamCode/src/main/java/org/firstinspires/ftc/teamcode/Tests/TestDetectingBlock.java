@@ -15,7 +15,7 @@ public class TestDetectingBlock extends OpMode {
     public void init() {
         telemetry.addLine("init");
         robot = new AutoBotVu(hardwareMap, telemetry);
-        //robot.initVu();
+        robot.initVu();
         telemetry.update();
     }
 
@@ -28,7 +28,7 @@ public class TestDetectingBlock extends OpMode {
     public void start() {
         telemetry.addLine("start");
         //robot.setUpWheels();
-        robot.initVu();
+        //robot.initVu();
         //robot.setUpLiftMotor();
         telemetry.update();
     }
