@@ -1,6 +1,6 @@
 package org.firstinspires.ftc.teamcode.Tests;
 
-import com.disnodeteam.dogecv.detectors.skystone.SkystoneDetector;
+//import com.disnodeteam.dogecv.detectors.skystone.SkystoneDetector;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
@@ -13,12 +13,12 @@ import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackable;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackableDefaultListener;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackables;
-import org.firstinspires.ftc.robotcore.external.tfod.Recognition;
-import org.firstinspires.ftc.robotcore.external.tfod.TFObjectDetector;
+//import org.firstinspires.ftc.robotcore.external.tfod.Recognition;
+//import org.firstinspires.ftc.robotcore.external.tfod.TFObjectDetector;
 import org.firstinspires.ftc.teamcode.Helper.Robot;
-import org.openftc.easyopencv.OpenCvCamera;
-import org.openftc.easyopencv.OpenCvCameraRotation;
-import org.openftc.easyopencv.OpenCvInternalCamera;
+//import org.openftc.easyopencv.OpenCvCamera;
+//import org.openftc.easyopencv.OpenCvCameraRotation;
+//import org.openftc.easyopencv.OpenCvInternalCamera;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -86,8 +86,8 @@ public class AutoBotVu extends Robot{
     VuforiaTrackables targetsSkyStone = this.vuforia.loadTrackablesFromAsset("Skystone");
 
     //DogeCV Stuff
-    private OpenCvCamera phoneCam;
-    private SkystoneDetector skyStoneDetector;
+    //private OpenCvCamera phoneCam;
+    //private SkystoneDetector skyStoneDetector;
 
     public int count = 0;
 
@@ -612,7 +612,7 @@ public class AutoBotVu extends Robot{
     public void stopVuforia(){
         targetsSkyStone.deactivate();
     }
-
+    /*
     public void initDogeCV(){
         int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
         phoneCam = new OpenCvInternalCamera(OpenCvInternalCamera.CameraDirection.BACK, cameraMonitorViewId);
@@ -638,5 +638,7 @@ public class AutoBotVu extends Robot{
         phoneCam.stopStreaming();
         phoneCam.closeCameraDevice();
     }
+
+     */
 }
 

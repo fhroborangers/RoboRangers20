@@ -27,7 +27,7 @@ public class TestDetectingBlock extends OpMode {
     @Override
     public void start() {
         telemetry.addLine("start");
-        robot.setUpWheels();
+        //robot.setUpWheels();
         robot.initVu();
         //robot.setUpLiftMotor();
         telemetry.update();
