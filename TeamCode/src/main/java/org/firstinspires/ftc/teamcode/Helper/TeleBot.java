@@ -73,7 +73,7 @@ public class TeleBot extends Robot {
         }
         try {
             movingClaw = hardwareMap.get(Servo.class, "movingClaw");
-            movingClaw.setPosition(13/24);
+            movingClaw.setPosition(.3);
 
         } catch (Exception e) {
             telemetry.addLine("movingClaw : ERROR");
@@ -100,28 +100,28 @@ public class TeleBot extends Robot {
 
     public void move2(Gamepad gamepad){
         if(gamepad.dpad_up){
-            topLeft.setPower(-0.3);
-            botLeft.setPower(-0.3);
-            botRight.setPower(0.3);
-            topRight.setPower(0.3);
+            topLeft.setPower(-0.8);
+            botLeft.setPower(-0.8);
+            botRight.setPower(0.8);
+            topRight.setPower(0.8);
         }
         else if(gamepad.dpad_down){
-            topLeft.setPower(0.3);
-            botLeft.setPower(0.3);
-            botRight.setPower(-0.3);
-            topRight.setPower(-0.3);
+            topLeft.setPower(0.8);
+            botLeft.setPower(0.8);
+            botRight.setPower(-0.8);
+            topRight.setPower(-0.8);
         }
         else if(gamepad.dpad_left){
-            topLeft.setPower(0.5);
-            botLeft.setPower(-0.5);
-            botRight.setPower(-0.5);
-            topRight.setPower(0.5);
+            topLeft.setPower(0.8);
+            botLeft.setPower(-0.8);
+            botRight.setPower(-0.8);
+            topRight.setPower(0.8);
         }
         else if(gamepad.dpad_right){
-            topLeft.setPower(-0.5);
-            botLeft.setPower(0.5);
-            botRight.setPower(0.5);
-            topRight.setPower(-0.5);
+            topLeft.setPower(-0.8);
+            botLeft.setPower(0.8);
+            botRight.setPower(0.8);
+            topRight.setPower(-0.8);
         }
         else{
             topLeft.setPower(0);
@@ -136,61 +136,35 @@ public class TeleBot extends Robot {
         //Possible Values
         // U = Up, D = Down, L = Left, R = Right, N = None/No Movement, r = rotate right, l = rotate left
         char direction;
-        double angle1 = Math.abs(Math.atan(gamepad.left_stick_y/gamepad.left_stick_x)); //in radians
-        double rStickX = gamepad.right_stick_x;
-        telemetry.addLine("Angle in Degrees: " + Math.toDegrees(angle1));
-        if(angle1 < Math.PI/4){
-            if(gamepad.left_stick_x > 0){
-                direction = 'R';
-            }
-            else{
-                direction = 'L';
-            }
+        if(gamepad.left_stick_y > 0){
+            direction = 'u';
         }
-        else if(angle1 > Math.PI/4){
-            if(gamepad.left_stick_y > 0){
-                direction = 'U';
-            }
-            else{
-                direction = 'D';
-            }
+        else if(gamepad.left_stick_y < 0){
+            direction = 'd';
         }
-        else if(rStickX>0) //rotate right
+        else if(gamepad.right_stick_x>0) //rotate right
         {
             direction = 'r';
         }
-        else if(rStickX<0) //rotate left
+        else if(gamepad.right_stick_x<0) //rotate left
         {
             direction = 'l';
         }
         else {
-            direction = 'N';
+            direction = 'n';
         }
 
 
-        if(direction == 'U'){
+        if(direction == 'u'){
             topLeft.setPower(gamepad.right_trigger);
             botLeft.setPower(gamepad.right_trigger);
             botRight.setPower(-gamepad.right_trigger);
             topRight.setPower(-gamepad.right_trigger);
         }
-        else if(direction == 'D'){
+        else if(direction == 'd'){
             topLeft.setPower(-gamepad.right_trigger);
             botLeft.setPower(-gamepad.right_trigger);
             botRight.setPower(gamepad.right_trigger);
-            topRight.setPower(gamepad.right_trigger);
-        }
-        else if(direction == 'R'){
-            topLeft.setPower(-gamepad.right_trigger);
-            botLeft.setPower(gamepad.right_trigger);
-            botRight.setPower(gamepad.right_trigger);
-            topRight.setPower(-gamepad.right_trigger);
-
-        }
-        else if(direction == 'L'){
-            topLeft.setPower(gamepad.right_trigger);
-            botLeft.setPower(-gamepad.right_trigger);
-            botRight.setPower(-gamepad.right_trigger);
             topRight.setPower(gamepad.right_trigger);
         }
         else if(direction=='r') {
@@ -202,10 +176,10 @@ public class TeleBot extends Robot {
         else if(direction=='l') {
             topLeft.setPower(gamepad.right_trigger);
             botLeft.setPower(gamepad.right_trigger);
-            botRight.setPower(-gamepad.right_trigger);
-            topRight.setPower(-gamepad.right_trigger);
+            botRight.setPower(gamepad.right_trigger);
+            topRight.setPower(gamepad.right_trigger);
         }
-        else if(direction == 'N') {
+        else if(direction == 'n') {
             topLeft.setPower(0);
             botLeft.setPower(0);
             botRight.setPower(0);
@@ -228,7 +202,7 @@ public class TeleBot extends Robot {
             movingClaw.setPosition(.3);
         }
         else if(gamepad.right_bumper) {
-            movingClaw.setPosition(13/24);
+            movingClaw.setPosition(.85);
         }
 
     }

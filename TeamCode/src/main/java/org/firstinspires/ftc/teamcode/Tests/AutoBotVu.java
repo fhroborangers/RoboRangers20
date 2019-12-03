@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode.Tests;
 
 //import com.disnodeteam.dogecv.detectors.skystone.SkystoneDetector;
+import com.disnodeteam.dogecv.detectors.skystone.SkystoneDetector;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
@@ -16,6 +17,9 @@ import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackables;
 //import org.firstinspires.ftc.robotcore.external.tfod.Recognition;
 //import org.firstinspires.ftc.robotcore.external.tfod.TFObjectDetector;
 import org.firstinspires.ftc.teamcode.Helper.Robot;
+import org.openftc.easyopencv.OpenCvCamera;
+import org.openftc.easyopencv.OpenCvCameraRotation;
+import org.openftc.easyopencv.OpenCvInternalCamera;
 //import org.openftc.easyopencv.OpenCvCamera;
 //import org.openftc.easyopencv.OpenCvCameraRotation;
 //import org.openftc.easyopencv.OpenCvInternalCamera;
@@ -83,11 +87,11 @@ public class AutoBotVu extends Robot{
     private float phoneZRotate    = 0;
 
     List<VuforiaTrackable> allTrackables = new ArrayList<VuforiaTrackable>();
-    VuforiaTrackables targetsSkyStone = this.vuforia.loadTrackablesFromAsset("Skystone");
+    VuforiaTrackables targetsSkyStone;// = this.vuforia.loadTrackablesFromAsset("Skystone");
 
     //DogeCV Stuff
-    //private OpenCvCamera phoneCam;
-    //private SkystoneDetector skyStoneDetector;
+    private OpenCvCamera phoneCam;
+    private SkystoneDetector skyStoneDetector;
 
     public int count = 0;
 
@@ -380,6 +384,7 @@ public class AutoBotVu extends Robot{
 
         //  Instantiate the Vuforia engine
         vuforia = ClassFactory.getInstance().createVuforia(parameters);
+        targetsSkyStone = this.vuforia.loadTrackablesFromAsset("Skystone");;
 
         // Load the data sets for the trackable objects. These particular data
         // sets are stored in the 'assets' part of our application.
@@ -615,5 +620,39 @@ public class AutoBotVu extends Robot{
         }
         telemetry.update();
     }
+
+    public void initDogeCV(){
+        int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
+        phoneCam = new OpenCvInternalCamera(OpenCvInternalCamera.CameraDirection.BACK, cameraMonitorViewId);
+        phoneCam.openCameraDevice();
+        skyStoneDetector = new SkystoneDetector();
+        phoneCam.setPipeline(skyStoneDetector);
+        phoneCam.startStreaming(320, 240, OpenCvCameraRotation.UPRIGHT);
+    }
+
+    public boolean loopDogeCV(){
+        double centerX = (skyStoneDetector.foundRectangle().x + skyStoneDetector.foundRectangle().width) / 2;
+        telemetry.addLine("CenterX: " + centerX);
+        if(skyStoneDetector.isDetected()){
+            if(centerX > 300 && centerX < 340) {
+                telemetry.addLine("STOOOOOP");
+                telemetry.update();
+                return true;
+            }
+            else{
+                return false;
+            }
+        }
+        else{
+            return false;
+        }
+    }
+
+    public void stopDogeCV(){
+        phoneCam.stopStreaming();
+        phoneCam.closeCameraDevice();
+    }
+
+
 }
 
