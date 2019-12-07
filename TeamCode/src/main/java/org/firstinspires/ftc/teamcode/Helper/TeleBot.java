@@ -100,22 +100,22 @@ public class TeleBot extends Robot {
 
     public void move2(Gamepad gamepad){
         if(gamepad.dpad_up){
-            topLeft.setPower(-0.8);
-            botLeft.setPower(-0.8);
+            //topLeft.setPower(0);
+            botLeft.setPower(0.8);
             botRight.setPower(0.8);
-            topRight.setPower(0.8);
+            //topRight.setPower(0);
         }
         else if(gamepad.dpad_down){
-            topLeft.setPower(0.8);
-            botLeft.setPower(0.8);
-            botRight.setPower(-0.8);
-            topRight.setPower(-0.8);
-        }
-        else if(gamepad.dpad_left){
-            topLeft.setPower(0.8);
+            topLeft.setPower(0);
             botLeft.setPower(-0.8);
             botRight.setPower(-0.8);
-            topRight.setPower(0.8);
+            topRight.setPower(0);
+        }
+        else if(gamepad.dpad_left){
+            //topLeft.setPower(0.8);
+            //botLeft.setPower(-0.8);
+            //botRight.setPower(-0.8);
+            //topRight.setPower(0.8);
         }
         else if(gamepad.dpad_right){
             topLeft.setPower(-0.8);
@@ -203,6 +203,14 @@ public class TeleBot extends Robot {
         }
         else if(gamepad.right_bumper) {
             movingClaw.setPosition(.85);
+        }
+        if(gamepad.dpad_up){
+            movingClaw.setPosition(.85);
+            claw.setPosition(0);
+        }
+        if(gamepad.dpad_down){
+            movingClaw.setPosition(.3);
+            claw.setPosition(1);
         }
 
     }
