@@ -2,10 +2,12 @@ package org.firstinspires.ftc.teamcode.Tests;
 
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 
 import org.firstinspires.ftc.teamcode.Helper.AutoBot;
 
+@Disabled
 @Autonomous(name = "TestDetectingBlock")
 public class TestDetectingBlock extends OpMode {
 
@@ -15,7 +17,7 @@ public class TestDetectingBlock extends OpMode {
     public void init() {
         telemetry.addLine("init");
 
-        robot.initDogeCV();
+       // robot.initDogeCV();
         telemetry.update();
     }
 
@@ -37,7 +39,7 @@ public class TestDetectingBlock extends OpMode {
     public void loop() {
         int count = robot.count;
         telemetry.addLine("loop \n Count: " + count);
-        robot.loopDogeCV();
+        //robot.loopDogeCV();
         telemetry.update();
     }
 
@@ -45,7 +47,7 @@ public class TestDetectingBlock extends OpMode {
     @Override
     public void stop() {
         telemetry.addLine("stop");
-        robot.stopDogeCV();
+        //robot.stopDogeCV();
     }
 
 

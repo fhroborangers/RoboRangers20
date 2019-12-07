@@ -17,7 +17,7 @@ public class StoneBlueAuto extends OpMode {
     public void init() {
         telemetry.addLine("init");
         robot = new AutoBot(hardwareMap, telemetry);
-
+        robot.initTensor();
         telemetry.update();
     }
 
@@ -40,11 +40,9 @@ public class StoneBlueAuto extends OpMode {
         int count = robot.count;
         int backwardEncoder = robot.backwardEncoder;
         telemetry.addLine("loop " + count);
-
-
-
+        robot.loopTensor();
         if(count == 0){
-
+            robot.forwardTest(1461);
         }
         /*
         if(count == 0) {
@@ -95,7 +93,7 @@ public class StoneBlueAuto extends OpMode {
     @Override
     public void stop() {
         telemetry.addLine("stop");
-
+        robot.stopTensor();
     }
 
 }
