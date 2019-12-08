@@ -16,7 +16,6 @@ public class TestDetectingBlock extends OpMode {
     @Override
     public void init() {
         telemetry.addLine("init");
-
        // robot.initDogeCV();
         telemetry.update();
     }

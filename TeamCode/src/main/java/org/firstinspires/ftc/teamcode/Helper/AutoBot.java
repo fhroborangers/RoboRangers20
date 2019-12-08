@@ -322,18 +322,33 @@ public class AutoBot extends Robot{
 
     public void openClaw(){
         claw.setPosition(1);
+        count++;
     }
 
     public void closeClaw(){
-        claw.setPosition(0);
-    }
-
-    public void openClawArm(){
-        potato.setPosition(1);
+        if(claw.getPosition() != 0) {
+            claw.setPosition(0);
+        }
+        else{
+            count++;
+        }
     }
 
     public void closeClawArm(){
+        potato.setPosition(1);
+    }
+
+    public void openClawArm(){
         potato.setPosition(0);
+    }
+
+    public void movingClawRight(){
+        if(movingClaw.getPosition() != 0.85){
+            movingClaw.setPosition(0.85);
+        }
+        else{
+            count++;
+        }
     }
 
     //Handle Encoders
@@ -357,6 +372,8 @@ public class AutoBot extends Robot{
         telemetry.addLine("BotRight Encoders: " + botRight.getCurrentPosition());
         telemetry.addLine("Lift Encoders: " + liftMotor.getCurrentPosition());
     }
+
+
 
     private void initVuforia() {
         /*

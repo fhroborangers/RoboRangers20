@@ -218,7 +218,6 @@ public class TeleBot extends Robot {
     public void potatoServo(Gamepad gamepad) {
         if (gamepad.y)
         {
-
             potato.setPosition(1);
 
         }
