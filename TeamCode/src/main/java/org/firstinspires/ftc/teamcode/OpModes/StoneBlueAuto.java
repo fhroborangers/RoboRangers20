@@ -42,7 +42,7 @@ public class StoneBlueAuto extends OpMode {
         telemetry.addLine("loop " + count);
         robot.loopTensor();
         if(count == 0){
-            robot.forwardTest(1461);
+            robot.rotateLeft(818);
         }
         /*
         if(count == 0) {

@@ -99,7 +99,7 @@ public class AutoBot extends Robot{
         try{
             potato = hardwareMap.get(Servo.class, "potato");
             potato.setDirection(Servo.Direction.REVERSE);
-            potato.setPosition(0);
+            //potato.setPosition(0);
         }
         catch(Exception e ){
             telemetry.addLine("potato : error");
@@ -209,7 +209,7 @@ public class AutoBot extends Robot{
     public void forwardCM(int cm){
         double ticksPerCM = 730 /(10.16*Math.PI);
         int ticks = (int)ticksPerCM * cm;
-        forward(ticks);
+        forwardTest(ticks);
     }
 
     public void backwardCM(int cm){
