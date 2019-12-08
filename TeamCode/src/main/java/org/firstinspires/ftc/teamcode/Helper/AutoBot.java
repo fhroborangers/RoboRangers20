@@ -189,7 +189,7 @@ public class AutoBot extends Robot{
         else{
             power = 0.5;
         }
-        if(Math.abs(topLeft.getCurrentPosition()) < ticks) {
+        if(Math.abs(botLeft.getCurrentPosition()) < ticks) {
             topLeft.setPower(-power);
             botLeft.setPower(-power);
             topRight.setPower(power);
