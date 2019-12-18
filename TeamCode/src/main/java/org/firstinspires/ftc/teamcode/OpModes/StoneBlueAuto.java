@@ -17,7 +17,7 @@ public class StoneBlueAuto extends OpMode {
     public void init() {
         telemetry.addLine("init");
         robot = new AutoBot(hardwareMap, telemetry);
-        //robot.initTensor();
+        robot.initTensor();
         telemetry.update();
     }
 
@@ -29,31 +29,38 @@ public class StoneBlueAuto extends OpMode {
     @Override
     public void start() {
         telemetry.addLine("start");
-        robot.setUpWheels();
-        robot.setUpLiftMotor();
-        robot.setUpClawServos();
-        robot.resetEncoders();
+       // robot.setUpWheels();
+        //robot.setUpLiftMotor();
+        //robot.setUpClawServos();
+        //robot.resetEncoders();
         telemetry.update();
     }
     @Override
     public void loop() {
        int count =  robot.count;
         int backwardEncoder = robot.backwardEncoder;
-        telemetry.addLine("loop " + count);
-        //robot.loopTensor();
-        if(count == 0){
-            robot.openClaw();
-            robot.moveLiftUp(2800);
+        //telemetry.addLine("loop " + count);
+        robot.loopTensor();
+        /*if(count == 0){
+            robot.forwardCM(51);
         }
+
         else if(count == 1){
-           // robot.openClaw();
-            //robot.openClawArm();
+            //robot.rotateLeftCos(810); //1100 ticks for 90 degrees
+            robot.rotateLeft(2200);
         }
+        else if(count==2)
+        {
+            robot.backwardCM(15);
+        }
+        else if(count==3)
+        {
+            robot.rotateLeft(2200);
+        }
+        else if(count==4)
+            robot.backwardCM(30);
+
         /*
-        else if(count == 2){
-            robot.forwardCM(61);
-            //robot.rotateLeft(830); 90 degrees
-        }
         else if(count ==3){
             robot.moveLiftDown(1000);
         }
@@ -90,16 +97,16 @@ public class StoneBlueAuto extends OpMode {
         else if(count==14){
             robot.forwardCM(20);
         }
-
+robot.printEncoders();
          */
-        robot.printEncoders();
+
     }
 
 
     @Override
     public void stop() {
         telemetry.addLine("stop");
-        //robot.stopTensor();
+        robot.stopTensor();
     }
 
 }

@@ -33,9 +33,9 @@ public class RobotTele extends OpMode {
     @Override
     public void loop() {
         telemetry.addLine("loop");
-        //robot.move(gamepad1);
+        robot.move(gamepad1);
         //robot.move2(gamepad1);
-        robot.moveWithAngle(gamepad1);
+        //robot.moveWithAngle(gamepad1);
         robot.moveClaw(gamepad2);
         robot.moveLiftMotor(gamepad2);
         robot.potatoServo(gamepad2);

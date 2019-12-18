@@ -6,6 +6,7 @@ import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.robotcore.external.ClassFactory;
 import org.firstinspires.ftc.robotcore.external.Telemetry;
+import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
 import org.firstinspires.ftc.robotcore.external.tfod.Recognition;
 import org.firstinspires.ftc.robotcore.external.tfod.TFObjectDetector;
@@ -20,7 +21,7 @@ public class AutoBot extends Robot{
     private static final String LABEL_FIRST_ELEMENT = "Stone";
     private static final String LABEL_SECOND_ELEMENT = "Skystone";
     private static final String VUFORIA_KEY =
-            "ATMeJeb/////AAAAGaZ47DzTRUyOhcXnfJD+z89ATBWAF+fi+oOutLvXaf0YT/RPuf2mu6VJsJowCDiWiOzGMHUjXKsLBqA4Ziar76oZY/juheUactiQaY6Z3qPHnGmchAMlYuqgKErvggTuqmFca8VvTjtB6YOheJmAbllTDTaCudODpnIDkuFNTa36WCTr4L8HcCnIsB7bjF8pZoivYEBwPkfCVtfAiEpqxbyDAZgNXnuCyp6v/oi3FYZbp7JkFVorcM182+q0PVN5gIr14SKEMlDcDFDiv/sQwNeQOs5iNBd1OSkCoTe9CYbdmtE0gUXxKN2w9NqwATYC6YRJP9uoopxqmr9zkepI10peh2/RnU6pHOmR0KKRAVh8";
+            "ATyCPNT/////AAABmUcK7WJSFEtbvICLlZK2chE6REd6emSDzHsJ0c8fml6HkSE8PrITq4Jq2zJjzsSNcjkIrxQP4B2BCcNvqDU8di8TW8S3sOYrXakm4KIDqGO7S3cIhfVL21FAbKDfD3IkpP87+YhT5JcxpFguOYMjDiW97/UyMAqLsddkbO3e8r8ES/30gQUnwCxqgMY+5X+UV7L6e7If8WdDFHnteszwkaHAhDD5aWSi9mSSpQy2TG+jKKggEwJh++vBtSBvN/GO5Yj4V/nqfLX5y0kipl/MD1Pzve+tfcGufSNK8idlzFhQ86gtVzB62Bm5PnE/9BbdxjNOwlB781EXsB2yTs6j54Pd8YC4EoAXEGLR9YXMGUCj";
     private VuforiaLocalizer vuforia;
     private TFObjectDetector tfod;
     //Auto Variables
@@ -180,7 +181,7 @@ public class AutoBot extends Robot{
         }
     }
 
-    public void forwardTest(int ticks){
+    public void forwardCos(int ticks){
         telemetry.addLine(""+(Math.abs(botLeft.getCurrentPosition()) < ticks));
         double power;
         if(ticks - botLeft.getCurrentPosition() > (730 * 2)) {
@@ -206,16 +207,94 @@ public class AutoBot extends Robot{
         }
     }
 
+    public void backwardCos(int ticks){
+        telemetry.addLine(""+(Math.abs(botLeft.getCurrentPosition()) < ticks));
+        double power;
+        if(ticks - botLeft.getCurrentPosition() > (730 * 2)) {
+            power = (Math.cos((9.87 * botLeft.getCurrentPosition())/(ticks * Math.PI)) / 4) + 0.75;
+        }
+        else{
+            power = 0.5;
+        }
+        if(Math.abs(botLeft.getCurrentPosition()) < ticks) {
+            topLeft.setPower(power);
+            botLeft.setPower(power);
+            topRight.setPower(-power);
+            botRight.setPower(-power);
+        }
+        else{
+            telemetry.addLine("here lmao");
+            topLeft.setPower(0);
+            botLeft.setPower(0);
+            topRight.setPower(0);
+            botRight.setPower(0);
+            resetEncoders();
+            count++;
+        }
+    }
+
+    public void rotateLeftCos(int ticks){
+        telemetry.addLine(""+(Math.abs(botLeft.getCurrentPosition()) < ticks));
+        double power;
+        if(ticks - botLeft.getCurrentPosition() > (200)) {
+            power = (Math.cos((9.87 * botLeft.getCurrentPosition())/(ticks * Math.PI)) / 5) + 0.3;
+        }
+        else{
+            power = 0.1;
+        }
+        if(Math.abs(botLeft.getCurrentPosition()) < ticks) {
+            topLeft.setPower(power);
+            botLeft.setPower(power);
+            topRight.setPower(power);
+            botRight.setPower(power);
+        }
+        else{
+            telemetry.addLine("here lmao");
+            topLeft.setPower(0);
+            botLeft.setPower(0);
+            topRight.setPower(0);
+            botRight.setPower(0);
+            resetEncoders();
+            count++;
+        }
+    }
+
+    public void rotateRightCos(int ticks){
+        telemetry.addLine(""+(Math.abs(botLeft.getCurrentPosition()) < ticks));
+        double power;
+        if(ticks - botLeft.getCurrentPosition() > (100)) {
+            power = (Math.cos((9.87 * botLeft.getCurrentPosition())/(ticks * Math.PI)) / 5) + 0.4;
+        }
+        else{
+            power = 0.2;
+        }
+        if(Math.abs(botLeft.getCurrentPosition()) < ticks) {
+            topLeft.setPower(-power);
+            botLeft.setPower(-power);
+            topRight.setPower(-power);
+            botRight.setPower(-power);
+        }
+        else{
+            telemetry.addLine("here lmao");
+            topLeft.setPower(0);
+            botLeft.setPower(0);
+            topRight.setPower(0);
+            botRight.setPower(0);
+            resetEncoders();
+            count++;
+        }
+    }
+
     public void forwardCM(int cm){
         double ticksPerCM = 730 /(10.16*Math.PI);
         int ticks = (int)ticksPerCM * cm;
-        forwardTest(ticks);
+        forwardCos(ticks);
     }
 
     public void backwardCM(int cm){
         double ticksPerCM = 730 /(10.16*Math.PI);
         int ticks = (int)ticksPerCM * cm;
-        backward(ticks);
+        backwardCos(ticks);
     }
 
     public void rotateLeftDegrees(int degrees){
@@ -340,6 +419,7 @@ public class AutoBot extends Robot{
 
     public void openClawArm(){
         potato.setPosition(0);
+        count++;
     }
 
     public void movingClawRight(){
@@ -382,7 +462,7 @@ public class AutoBot extends Robot{
         VuforiaLocalizer.Parameters parameters = new VuforiaLocalizer.Parameters();
 
         parameters.vuforiaLicenseKey = VUFORIA_KEY;
-        parameters.cameraDirection = VuforiaLocalizer.CameraDirection.BACK;
+        parameters.cameraName = hardwareMap.get(WebcamName.class, "Webcam 1");
 
         //  Instantiate the Vuforia engine
         vuforia = ClassFactory.getInstance().createVuforia(parameters);
@@ -428,7 +508,6 @@ public class AutoBot extends Robot{
             List<Recognition> updatedRecognitions = tfod.getUpdatedRecognitions();
             if (updatedRecognitions != null) {
                 telemetry.addData("# Object Detected", updatedRecognitions.size());
-
                 // step through the list of recognitions and display boundary info.
                 int i = 0;
                 for (Recognition recognition : updatedRecognitions) {
