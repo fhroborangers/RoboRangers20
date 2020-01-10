@@ -17,8 +17,9 @@ public class StoneBlueAuto extends OpMode {
     public void init() {
         telemetry.addLine("init");
         robot = new AutoBot(hardwareMap, telemetry);
-        robot.initTensor();
         telemetry.update();
+        robot.initTensor();
+
     }
 
     public void init_loop() {
@@ -29,18 +30,28 @@ public class StoneBlueAuto extends OpMode {
     @Override
     public void start() {
         telemetry.addLine("start");
-       // robot.setUpWheels();
+        robot.setUpWheels();
         //robot.setUpLiftMotor();
         //robot.setUpClawServos();
-        //robot.resetEncoders();
+        robot.resetEncoders();
         telemetry.update();
     }
     @Override
     public void loop() {
-       int count =  robot.count;
+        int count =  robot.count;
         int backwardEncoder = robot.backwardEncoder;
-        //telemetry.addLine("loop " + count);
-        robot.loopTensor();
+        telemetry.addLine("loop " + count);
+        if(count == 0) {
+            robot.strafeRightUntilSkystone(robot.loopTensor());
+        }
+        else if(count == 1) {
+            robot.resetEncoders();
+        }
+        else if(count == 2){
+            robot.forwardCM(50);
+        }
+
+
         /*if(count == 0){
             robot.forwardCM(51);
         }

@@ -24,6 +24,7 @@ public class AutoBot extends Robot{
             "ATyCPNT/////AAABmUcK7WJSFEtbvICLlZK2chE6REd6emSDzHsJ0c8fml6HkSE8PrITq4Jq2zJjzsSNcjkIrxQP4B2BCcNvqDU8di8TW8S3sOYrXakm4KIDqGO7S3cIhfVL21FAbKDfD3IkpP87+YhT5JcxpFguOYMjDiW97/UyMAqLsddkbO3e8r8ES/30gQUnwCxqgMY+5X+UV7L6e7If8WdDFHnteszwkaHAhDD5aWSi9mSSpQy2TG+jKKggEwJh++vBtSBvN/GO5Yj4V/nqfLX5y0kipl/MD1Pzve+tfcGufSNK8idlzFhQ86gtVzB62Bm5PnE/9BbdxjNOwlB781EXsB2yTs6j54Pd8YC4EoAXEGLR9YXMGUCj";
     private VuforiaLocalizer vuforia;
     private TFObjectDetector tfod;
+
     //Auto Variables
     public int count = 0;
     public int backwardEncoder = 0;
@@ -433,16 +434,21 @@ public class AutoBot extends Robot{
 
     //Handle Encoders
     public void resetEncoders(){
-        topLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        botLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        topRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        botRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        liftMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        topLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        botLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        topRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        botRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        liftMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        if(botLeft.getCurrentPosition() > 0) {
+            topLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+            botLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+            topRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+            botRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+            //liftMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+            topLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+            botLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+            topRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+            botRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+            //liftMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        }
+        else {
+            count++;
+        }
     }
 
     public void printEncoders(){
@@ -450,11 +456,34 @@ public class AutoBot extends Robot{
         telemetry.addLine("BotLeft Encoders: " + botLeft.getCurrentPosition());
         telemetry.addLine("TopRight Encoders: " + topRight.getCurrentPosition());
         telemetry.addLine("BotRight Encoders: " + botRight.getCurrentPosition());
-        telemetry.addLine("Lift Encoders: " + liftMotor.getCurrentPosition());
+        //telemetry.addLine("Lift Encoders: " + liftMotor.getCurrentPosition());
     }
 
+    //INIT / SETUP
+    public void initTensor() {
+        initVuforia();
 
+        if (ClassFactory.getInstance().canCreateTFObjectDetector()) {
+            initTfod();
+        }
+        else {
+            telemetry.addData("Sorry!", "This device is not compatible with TFOD");
+        }
 
+        /*
+         * Activate TensorFlow Object Detection before we wait for the start command.
+         * Do it here so that the Camera Stream window will have the TensorFlow annotations visible.
+         */
+
+        if (tfod != null) {
+            tfod.activate();
+        }
+
+        /** Wait for the game to begin */
+        telemetry.addData(">", "Press Play to start op mode");
+        telemetry.update();
+
+    }
     private void initVuforia() {
         /*
          * Configure Vuforia by creating a Parameter object, and passing it to the Vuforia engine.
@@ -469,7 +498,6 @@ public class AutoBot extends Robot{
 
         // Loading trackables is not necessary for the TensorFlow Object Detection engine.
     }
-
     private void initTfod() {
         int tfodMonitorViewId = hardwareMap.appContext.getResources().getIdentifier(
                 "tfodMonitorViewId", "id", hardwareMap.appContext.getPackageName());
@@ -479,50 +507,51 @@ public class AutoBot extends Robot{
         tfod.loadModelFromAsset(TFOD_MODEL_ASSET, LABEL_FIRST_ELEMENT, LABEL_SECOND_ELEMENT);
     }
 
-    public void initTensor(){
-        initVuforia();
-
-        if (ClassFactory.getInstance().canCreateTFObjectDetector()) {
-            initTfod();
-        } else {
-            telemetry.addData("Sorry!", "This device is not compatible with TFOD");
-        }
-
-        /**
-         * Activate TensorFlow Object Detection before we wait for the start command.
-         * Do it here so that the Camera Stream window will have the TensorFlow annotations visible.
-         **/
-        if (tfod != null) {
-            tfod.activate();
-        }
-
-        /** Wait for the game to begin */
-        telemetry.addData(">", "Press Play to start op mode");
-        telemetry.update();
-    }
-
-    public void loopTensor() {
+    public boolean loopTensor() {
+        boolean output = false;
         if (tfod != null) {
             // getUpdatedRecognitions() will return null if no new information is available since
             // the last time that call was made.
-            List<Recognition> updatedRecognitions = tfod.getUpdatedRecognitions();
+            List<Recognition> updatedRecognitions = tfod.getRecognitions();
             if (updatedRecognitions != null) {
-                telemetry.addData("# Object Detected", updatedRecognitions.size());
-                // step through the list of recognitions and display boundary info.
-                int i = 0;
+                telemetry.addLine("arnav make it move OwO");
                 for (Recognition recognition : updatedRecognitions) {
-                    telemetry.addData(String.format("label (%d)", i), recognition.getLabel());
-                    telemetry.addData(String.format("  left,top (%d)", i), "%.03f , %.03f",
-                            recognition.getLeft(), recognition.getTop());
-                    telemetry.addData(String.format("  right,bottom (%d)", i), "%.03f , %.03f",
-                            recognition.getRight(), recognition.getBottom());
+                    if(recognition.getLabel().equals("Skystone")) {
+                        {
+                            telemetry.addLine("I see the skystone uwu");
+                            if((recognition.getLeft() + recognition.getRight())/2 < (recognition.getImageWidth()/2) - 70) {
+                                output = true;
+                            }
+                        }
+                    }
                 }
                 telemetry.update();
             }
         }
+        return output;
     }
 
-    public void stopTensor(){
-        tfod.shutdown();
+    public void stopTensor() {
+        if (tfod != null) {
+            tfod.shutdown();
+        }
     }
+
+    public void strafeRightUntilSkystone(boolean detected) {
+        if(!detected) {
+            topLeft.setPower(-0.2);
+            botLeft.setPower(0.2);
+            topRight.setPower(-0.2);
+            botRight.setPower(0.2);
+        }
+        else
+        {
+            topLeft.setPower(0);
+            botLeft.setPower(0);
+            topRight.setPower(0);
+            botRight.setPower(0);
+            count++;
+        }
+    }
+
 }
