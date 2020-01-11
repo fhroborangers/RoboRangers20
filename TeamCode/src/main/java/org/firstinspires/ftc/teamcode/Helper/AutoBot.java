@@ -507,8 +507,8 @@ public class AutoBot extends Robot{
         tfod.loadModelFromAsset(TFOD_MODEL_ASSET, LABEL_FIRST_ELEMENT, LABEL_SECOND_ELEMENT);
     }
 
-    public boolean loopTensor() {
-        boolean output = false;
+    public int loopTensor() {
+        int output = 0;
         if (tfod != null) {
             // getUpdatedRecognitions() will return null if no new information is available since
             // the last time that call was made.
@@ -519,8 +519,27 @@ public class AutoBot extends Robot{
                     if(recognition.getLabel().equals("Skystone")) {
                         {
                             telemetry.addLine("I see the skystone uwu");
-                            if((recognition.getLeft() + recognition.getRight())/2 < (recognition.getImageWidth()/2) - 70) {
-                                output = true;
+                            // if((recognition.getLeft() + recognition.getRight())/2 < (recognition.getImageWidth()/2) - 70) {
+                            //     output = true;
+                            // }
+
+                            if((recognition.getLeft() + recognition.getRight())/2 > (recognition.getImageWidth()/2) - 30 && (recognition.getLeft() + recognition.getRight())/2 < (recognition.getImageWidth()/2) + 30) {
+
+                                if((recognition.getLeft() + recognition.getRight())/2 < (recognition.getImageWidth()/2)){
+                                    //Skystone to the left of center -- Strafe Right
+                                    output = 1;
+                                    telemetry.addLine("Left Of Center: Fixing");
+                                }
+                                else if((recognition.getLeft() + recognition.getRight())/2 > (recognition.getImageWidth()/2)){
+                                    //Skystone to the right of center -- Strafe left
+                                    output = 3;
+                                    telemetry.addLine("Right Of Center: Fixing");
+                                }
+                                else if((recognition.getLeft() + recognition.getRight())/2 == (recognition.getImageWidth()/2)){
+                                    //Skystone centered -- Stop
+                                    output = 2;
+                                    telemetry.addLine("Centered: Stoping");
+                                }
                             }
                         }
                     }
@@ -537,21 +556,54 @@ public class AutoBot extends Robot{
         }
     }
 
-    public void strafeRightUntilSkystone(boolean detected) {
-        if(!detected) {
+    public void strafeUntilSkystone(int detected) {
+        //if(!detected) {
+        //    topLeft.setPower(-0.2);
+        //    botLeft.setPower(0.2);
+        //    topRight.setPower(-0.2);
+        //    botRight.setPower(0.2);
+        //}
+        //else
+        //{
+        //    topLeft.setPower(0);
+        //    botLeft.setPower(0);
+        //    topRight.setPower(0);
+        //    botRight.setPower(0);
+        //    count++;
+        //}
+
+        if(detected == 0) {
+            //No Skystone detected - Strafe Right
             topLeft.setPower(-0.2);
             botLeft.setPower(0.2);
             topRight.setPower(-0.2);
             botRight.setPower(0.2);
         }
-        else
-        {
+        else if(detected == 3){
+            //Skystone to the right - Strafe Left
+            topLeft.setPower(0.05);
+            botLeft.setPower(-0.05);
+            topRight.setPower(0.05);
+            botRight.setPower(-0.05);
+        }
+        else if(detected == 1){
+            //Skystone to the left - Strafe right
+            topLeft.setPower(-0.05);
+            botLeft.setPower(0.05);
+            topRight.setPower(-0.05);
+            botRight.setPower(0.05);
+        }
+        else if(detected == 2) {
+            //Skystone in the center - Stop
             topLeft.setPower(0);
             botLeft.setPower(0);
             topRight.setPower(0);
             botRight.setPower(0);
+            resetEncoders();
             count++;
         }
+
+
     }
 
 }
