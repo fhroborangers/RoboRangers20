@@ -446,9 +446,9 @@ public class AutoBot extends Robot{
             botRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
             //liftMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         }
-        else {
+        /*else {
             count++;
-        }
+        }*/
     }
 
     public void printEncoders(){
@@ -507,8 +507,8 @@ public class AutoBot extends Robot{
         tfod.loadModelFromAsset(TFOD_MODEL_ASSET, LABEL_FIRST_ELEMENT, LABEL_SECOND_ELEMENT);
     }
 
-    public int loopTensor() {
-        int output = 0;
+    public boolean loopTensor() {
+        boolean output = false;
         if (tfod != null) {
             // getUpdatedRecognitions() will return null if no new information is available since
             // the last time that call was made.
@@ -519,12 +519,12 @@ public class AutoBot extends Robot{
                     if(recognition.getLabel().equals("Skystone")) {
                         {
                             telemetry.addLine("I see the skystone uwu");
-                            // if((recognition.getLeft() + recognition.getRight())/2 < (recognition.getImageWidth()/2) - 70) {
-                            //     output = true;
-                            // }
-
+                             if((recognition.getLeft() + recognition.getRight())/2 < (recognition.getImageWidth()/2) - 70) {
+                                 output = true;
+                             }
+/*
                             if((recognition.getLeft() + recognition.getRight())/2 > (recognition.getImageWidth()/2) - 30 && (recognition.getLeft() + recognition.getRight())/2 < (recognition.getImageWidth()/2) + 30) {
-
+                                output = 2;
                                 if((recognition.getLeft() + recognition.getRight())/2 < (recognition.getImageWidth()/2)){
                                     //Skystone to the left of center -- Strafe Right
                                     output = 1;
@@ -540,7 +540,8 @@ public class AutoBot extends Robot{
                                     output = 2;
                                     telemetry.addLine("Centered: Stoping");
                                 }
-                            }
+
+                            }*/
                         }
                     }
                 }
@@ -556,28 +557,29 @@ public class AutoBot extends Robot{
         }
     }
 
-    public void strafeUntilSkystone(int detected) {
-        //if(!detected) {
-        //    topLeft.setPower(-0.2);
-        //    botLeft.setPower(0.2);
-        //    topRight.setPower(-0.2);
-        //    botRight.setPower(0.2);
-        //}
-        //else
-        //{
-        //    topLeft.setPower(0);
-        //    botLeft.setPower(0);
-        //    topRight.setPower(0);
-        //    botRight.setPower(0);
-        //    count++;
-        //}
-
-        if(detected == 0) {
-            //No Skystone detected - Strafe Right
+    public void strafeUntilSkystone(boolean detected) {
+        if(!detected) {
             topLeft.setPower(-0.2);
             botLeft.setPower(0.2);
             topRight.setPower(-0.2);
             botRight.setPower(0.2);
+        }
+        else
+        {
+            topLeft.setPower(0);
+            botLeft.setPower(0);
+            topRight.setPower(0);
+            botRight.setPower(0);
+            count++;
+        }
+
+        /*
+        if(detected == 0) {
+            //No Skystone detected - Strafe Right
+            topLeft.setPower(-0.1);
+            botLeft.setPower(0.1);
+            topRight.setPower(-0.1);
+            botRight.setPower(0.1);
         }
         else if(detected == 3){
             //Skystone to the right - Strafe Left
@@ -599,9 +601,11 @@ public class AutoBot extends Robot{
             botLeft.setPower(0);
             topRight.setPower(0);
             botRight.setPower(0);
-            resetEncoders();
-            count++;
+            //resetEncoders();
+            //count++;
         }
+
+         */
 
 
     }
