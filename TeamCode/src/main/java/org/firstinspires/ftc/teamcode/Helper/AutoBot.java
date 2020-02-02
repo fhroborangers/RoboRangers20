@@ -75,39 +75,19 @@ public class AutoBot extends Robot{
 
     public void setUpLiftMotor() {
         try {
-            liftMotor = hardwareMap.get(DcMotor.class, "liftMotor");
-            liftMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-            liftMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+            liftMotor1 = hardwareMap.get(DcMotor.class, "liftMotor");
+            liftMotor1.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+            liftMotor1.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+            liftMotor2 = hardwareMap.get(DcMotor.class, "liftMotor");
+            liftMotor2.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+            liftMotor2.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
             telemetry.addLine("liftMotor : OK");
         } catch (Exception e) {
             telemetry.addLine("liftMotor : ERROR");
         }
     }
 
-    public void setUpClawServos(){
-        try {
-            claw = hardwareMap.get(Servo.class, "claw");
 
-        } catch (Exception e) {
-            telemetry.addLine("claw : ERROR");
-        }
-        try {
-            movingClaw = hardwareMap.get(Servo.class, "movingClaw");
-
-        } catch (Exception e) {
-            telemetry.addLine("movingClaw : ERROR");
-        }
-
-        try{
-            potato = hardwareMap.get(Servo.class, "potato");
-            potato.setDirection(Servo.Direction.REVERSE);
-            //potato.setPosition(0);
-        }
-        catch(Exception e ){
-            telemetry.addLine("potato : error");
-        }
-
-    }
 
     //Mechanical Movement Methods
 
@@ -378,7 +358,7 @@ public class AutoBot extends Robot{
         }
     }
 
-    public void moveLiftUp(int encoder){
+    /*public void moveLiftUp(int encoder){
         if(Math.abs(liftMotor.getCurrentPosition()) < encoder){
             liftMotor.setPower(0.5);
         }
@@ -399,20 +379,8 @@ public class AutoBot extends Robot{
             count++;
         }
     }
+*/
 
-    public void openClaw(){
-        claw.setPosition(1);
-        count++;
-    }
-
-    public void closeClaw(){
-        if(claw.getPosition() != 0) {
-            claw.setPosition(0);
-        }
-        else{
-            count++;
-        }
-    }
 
     public void closeClawArm(){
         potato.setPosition(1);
@@ -522,26 +490,30 @@ public class AutoBot extends Robot{
                              if((recognition.getLeft() + recognition.getRight())/2 < (recognition.getImageWidth()/2) - 70) {
                                  output = true;
                              }
-/*
-                            if((recognition.getLeft() + recognition.getRight())/2 > (recognition.getImageWidth()/2) - 30 && (recognition.getLeft() + recognition.getRight())/2 < (recognition.getImageWidth()/2) + 30) {
-                                output = 2;
-                                if((recognition.getLeft() + recognition.getRight())/2 < (recognition.getImageWidth()/2)){
-                                    //Skystone to the left of center -- Strafe Right
-                                    output = 1;
-                                    telemetry.addLine("Left Of Center: Fixing");
-                                }
-                                else if((recognition.getLeft() + recognition.getRight())/2 > (recognition.getImageWidth()/2)){
-                                    //Skystone to the right of center -- Strafe left
-                                    output = 3;
-                                    telemetry.addLine("Right Of Center: Fixing");
-                                }
-                                else if((recognition.getLeft() + recognition.getRight())/2 == (recognition.getImageWidth()/2)){
-                                    //Skystone centered -- Stop
-                                    output = 2;
-                                    telemetry.addLine("Centered: Stoping");
-                                }
+                        }
+                    }
+                }
+                telemetry.update();
+            }
+        }
+        return output;
+    }
 
-                            }*/
+    public double loopTensorVadim() {
+        double output = -1;
+        if (tfod != null) {
+            // getUpdatedRecognitions() will return null if no new information is available since
+            // the last time that call was made.
+            List<Recognition> updatedRecognitions = tfod.getRecognitions();
+            if (updatedRecognitions != null) {
+                telemetry.addLine("arnav make it move OwO");
+                for (Recognition recognition : updatedRecognitions) {
+                    if(recognition.getLabel().equals("Skystone")) {
+                        {
+                            telemetry.addLine("I see the skystone uwu");
+                            if((recognition.getLeft() + recognition.getRight())/2 < (recognition.getImageWidth()/2) - 70) {
+                                output = recognition.getImageWidth()/2-(recognition.getLeft()+recognition.getRight()/2);
+                            }
                         }
                     }
                 }
@@ -556,6 +528,45 @@ public class AutoBot extends Robot{
             tfod.shutdown();
         }
     }
+    public void strafeUntilSkystoneVadim(double position) {
+        if(position==-1) {
+            topLeft.setPower(-0.2);
+            botLeft.setPower(0.2);
+            topRight.setPower(-0.2);
+            botRight.setPower(0.2);
+        }
+        else
+        {
+            topLeft.setPower(0);
+            botLeft.setPower(0);
+            topRight.setPower(0);
+            botRight.setPower(0);
+            count++;
+        }
+    }
+    public void autoCorrect(double position) {
+        if(Math.abs(position)<30) {
+            topLeft.setPower(0);
+            botLeft.setPower(0);
+            topRight.setPower(0);
+            botRight.setPower(0);
+            count++;
+        }
+        else if(position<0) { //mid of skystone is to the right of mid of screen
+            topLeft.setPower(0.1);
+            botLeft.setPower(-0.1);
+            topRight.setPower(0.1);
+            botRight.setPower(-0.1);
+        }
+        else if(position>0) { //mid of skystone is to the left of mid of screen
+            topLeft.setPower(-0.1);
+            botLeft.setPower(0.1);
+            topRight.setPower(-0.1);
+            botRight.setPower(0.1);
+        }
+    }
+
+
 
     public void strafeUntilSkystone(boolean detected) {
         if(!detected) {
@@ -572,42 +583,11 @@ public class AutoBot extends Robot{
             botRight.setPower(0);
             count++;
         }
+    }
 
-        /*
-        if(detected == 0) {
-            //No Skystone detected - Strafe Right
-            topLeft.setPower(-0.1);
-            botLeft.setPower(0.1);
-            topRight.setPower(-0.1);
-            botRight.setPower(0.1);
-        }
-        else if(detected == 3){
-            //Skystone to the right - Strafe Left
-            topLeft.setPower(0.05);
-            botLeft.setPower(-0.05);
-            topRight.setPower(0.05);
-            botRight.setPower(-0.05);
-        }
-        else if(detected == 1){
-            //Skystone to the left - Strafe right
-            topLeft.setPower(-0.05);
-            botLeft.setPower(0.05);
-            topRight.setPower(-0.05);
-            botRight.setPower(0.05);
-        }
-        else if(detected == 2) {
-            //Skystone in the center - Stop
-            topLeft.setPower(0);
-            botLeft.setPower(0);
-            topRight.setPower(0);
-            botRight.setPower(0);
-            //resetEncoders();
-            //count++;
-        }
-
-         */
-
+    public void autoCorrectPosition() {
 
     }
+
 
 }

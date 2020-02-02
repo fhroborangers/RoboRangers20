@@ -30,7 +30,7 @@ public class TestDetectingBlock extends OpMode {
         telemetry.addLine("start");
         robot.setUpWheels();
 
-        robot.setUpLiftMotor();
+        //robot.setUpLiftMotor();
         telemetry.update();
     }
 

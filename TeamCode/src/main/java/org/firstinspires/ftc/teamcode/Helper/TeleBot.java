@@ -1,6 +1,8 @@
 package org.firstinspires.ftc.teamcode.Helper;
 
+import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
@@ -55,9 +57,12 @@ public class TeleBot extends Robot {
 
     public void setUpLiftMotor(){
         try{
-            liftMotor = hardwareMap.get(DcMotor.class, "liftMotor");
-            liftMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
-            liftMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+            liftMotor1 = hardwareMap.get(DcMotor.class, "liftMotor1");
+            liftMotor1.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
+            liftMotor1.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+            liftMotor2 = hardwareMap.get(DcMotor.class, "liftMotor2");
+            liftMotor2.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
+            liftMotor2.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
             telemetry.addLine("liftMotor : OK");
         } catch (Exception e) {
             telemetry.addLine("liftMotor : ERROR");
@@ -66,26 +71,30 @@ public class TeleBot extends Robot {
 
     public void setUpServos() {
         try {
-            claw = hardwareMap.get(Servo.class, "claw");
-
+            claw1 = hardwareMap.get(Servo.class, "claw1");
+            claw1.setPosition(0);
         } catch (Exception e) {
-            telemetry.addLine("claw : ERROR");
+            telemetry.addLine("claw1 : ERROR");
         }
-        try {
-            movingClaw = hardwareMap.get(Servo.class, "movingClaw");
-            movingClaw.setPosition(.3);
+        try{
+            claw2=hardwareMap.get(Servo.class,"claw2");
+            claw2.setPosition(0);
+        }catch(Exception e){
+            telemetry.addLine("claw2 : error");
+        }
 
-        } catch (Exception e) {
-            telemetry.addLine("movingClaw : ERROR");
-        }
+
+
+    }
+        public void setUpArm(){
 
         try{
-            potato = hardwareMap.get(Servo.class, "potato");
-            potato.setDirection(Servo.Direction.REVERSE);
-            potato.setPosition(0);
+            arm = hardwareMap.get(CRServo.class,"arm");
+            arm.setDirection(DcMotorSimple.Direction.FORWARD);
+
         }
-        catch(Exception e ){
-            telemetry.addLine("potato : error");
+        catch(Exception e){
+            telemetry.addLine("arm : error");
         }
 
     }
@@ -191,27 +200,16 @@ public class TeleBot extends Robot {
 
     }
 
-    public void moveClaw(Gamepad gamepad) {
+    public void moveBothClaws(Gamepad gamepad) {
         if(gamepad.a){
-            claw.setPosition(0);
+            claw1.setPosition(1);
+            claw2.setPosition(0);
         }
         else if(gamepad.x){
-            claw.setPosition(1);
+            claw1.setPosition(0);
+            claw2.setPosition(1);
         }
-        if(gamepad.left_bumper){
-            movingClaw.setPosition(.3);
-        }
-        else if(gamepad.right_bumper) {
-            movingClaw.setPosition(.85);
-        }
-        if(gamepad.dpad_up){
-            movingClaw.setPosition(.85);
-            claw.setPosition(0);
-        }
-        if(gamepad.dpad_down){
-            movingClaw.setPosition(.3);
-            claw.setPosition(1);
-        }
+
 
     }
 
@@ -229,18 +227,34 @@ public class TeleBot extends Robot {
     public void moveLiftMotor(Gamepad gamepad) {
 
         if (gamepad.left_trigger != 0 && gamepad.right_trigger == 0) {
-            liftMotor.setPower(-gamepad.left_trigger);
+            liftMotor1.setPower(-gamepad.left_trigger);
+            liftMotor2.setPower(-gamepad.left_trigger);
         }
         else if (gamepad.right_trigger != 0 && gamepad.left_trigger == 0) {
-            liftMotor.setPower(gamepad.right_trigger);
+            liftMotor1.setPower(gamepad.right_trigger);
+            liftMotor2.setPower(gamepad.right_trigger);
         }
         else if(gamepad.right_trigger == 0 && gamepad.left_trigger == 0){
-            liftMotor.setPower(0);
+            liftMotor1.setPower(0);
+            liftMotor2.setPower(0);
             telemetry.addLine("RIGHT 0");
         }
 
 
 
+
+
+    }
+    public void moveArm(Gamepad gamepad){
+        if(gamepad.right_bumper&& !gamepad.left_bumper) {
+            arm.setPower(1);
+        }
+        else if(gamepad.left_bumper&&!gamepad.right_bumper) {
+            arm.setPower(-1);
+        }
+        else {
+            arm.setPower(0);
+        }
 
 
     }

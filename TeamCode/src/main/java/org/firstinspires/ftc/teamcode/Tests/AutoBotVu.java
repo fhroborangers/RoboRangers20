@@ -137,7 +137,7 @@ public class AutoBotVu extends Robot{
         }
     }
 
-    public void setUpLiftMotor() {
+    /*public void setUpLiftMotor() {
         try {
             liftMotor = hardwareMap.get(DcMotor.class, "liftMotor");
             liftMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
@@ -147,6 +147,8 @@ public class AutoBotVu extends Robot{
             telemetry.addLine("liftMotor : ERROR");
         }
     }
+
+     */
 
     public void forward(int ticks){
         telemetry.addLine(""+(Math.abs(topLeft.getCurrentPosition()) < ticks));
@@ -310,7 +312,7 @@ public class AutoBotVu extends Robot{
         }
     }
 
-    public void moveLiftUp(int encoder){
+    /*public void moveLiftUp(int encoder){
         if(Math.abs(liftMotor.getCurrentPosition()) < encoder){
             liftMotor.setPower(0.5);
         }
@@ -331,14 +333,9 @@ public class AutoBotVu extends Robot{
             count++;
         }
     }
+*/
 
-    public void openClaw(){
-        claw.setPosition(1);
-    }
 
-    public void closeClaw(){
-        claw.setPosition(0);
-    }
 
     public void openClawArm(){
         potato.setPosition(1);
