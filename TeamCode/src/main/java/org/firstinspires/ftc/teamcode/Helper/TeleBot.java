@@ -30,7 +30,7 @@ public class TeleBot extends Robot {
         try {
             topRight = hardwareMap.get(DcMotor.class, "topRight");
             topRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
-            topRight.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+            topRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
             telemetry.addLine("topRight : OK");
         } catch (Exception e) {
             telemetry.addLine("topRight : ERROR");
@@ -39,7 +39,7 @@ public class TeleBot extends Robot {
         try {
             botLeft = hardwareMap.get(DcMotor.class, "botLeft");
             botLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
-            botLeft.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+            botLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
             telemetry.addLine("botLeft : OK");
         } catch (Exception e) {
             telemetry.addLine("botLeft : ERROR");
@@ -55,32 +55,47 @@ public class TeleBot extends Robot {
         }
     }
 
-    public void setUpLiftMotor(){
+    public void setUpLiftMotors(){
         try{
-            liftMotor1 = hardwareMap.get(DcMotor.class, "liftMotor1");
-            liftMotor1.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
-            liftMotor1.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-            liftMotor2 = hardwareMap.get(DcMotor.class, "liftMotor2");
-            liftMotor2.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
-            liftMotor2.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+            liftL = hardwareMap.get(DcMotor.class, "liftL");
+            liftL.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+            liftL.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+            liftR = hardwareMap.get(DcMotor.class, "liftR");
+            liftR.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+            liftR.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
             telemetry.addLine("liftMotor : OK");
         } catch (Exception e) {
             telemetry.addLine("liftMotor : ERROR");
         }
     }
 
+    public void setUpIntakeMotors(){
+        try{
+            intakeL = hardwareMap.get(DcMotor.class, "intakeL");
+            intakeL.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+            intakeL.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+            intakeR = hardwareMap.get(DcMotor.class, "intakeR");
+            intakeR.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+            intakeR.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+            telemetry.addLine("intake : OK");
+        } catch(Exception e) {
+            telemetry.addLine("intake : ERROR");
+        }
+    }
+
     public void setUpServos() {
+
         try {
-            claw1 = hardwareMap.get(Servo.class, "claw1");
-            claw1.setPosition(0);
+            plate1 = hardwareMap.get(Servo.class, "plate1");
+            plate1.setPosition(0);
         } catch (Exception e) {
-            telemetry.addLine("claw1 : ERROR");
+            telemetry.addLine("plate1 : ERROR");
         }
         try{
-            claw2=hardwareMap.get(Servo.class,"claw2");
-            claw2.setPosition(0);
+            plate2=hardwareMap.get(Servo.class,"plate2");
+            plate2.setPosition(0);
         }catch(Exception e){
-            telemetry.addLine("claw2 : error");
+            telemetry.addLine("plate2 : error");
         }
 
 
@@ -89,8 +104,10 @@ public class TeleBot extends Robot {
         public void setUpArm(){
 
         try{
-            arm = hardwareMap.get(CRServo.class,"arm");
-            arm.setDirection(DcMotorSimple.Direction.FORWARD);
+            arm1 = hardwareMap.get(CRServo.class,"armR");
+            arm1.setDirection(DcMotorSimple.Direction.FORWARD);
+            arm2 = hardwareMap.get(CRServo.class,"armL");
+            arm2.setDirection(DcMotorSimple.Direction.REVERSE);
 
         }
         catch(Exception e){
@@ -109,10 +126,10 @@ public class TeleBot extends Robot {
 
     public void move2(Gamepad gamepad){
         if(gamepad.dpad_up){
-            //topLeft.setPower(0);
+            topLeft.setPower(0);
             botLeft.setPower(0.8);
             botRight.setPower(0.8);
-            //topRight.setPower(0);
+            topRight.setPower(0);
         }
         else if(gamepad.dpad_down){
             topLeft.setPower(0);
@@ -121,10 +138,10 @@ public class TeleBot extends Robot {
             topRight.setPower(0);
         }
         else if(gamepad.dpad_left){
-            //topLeft.setPower(0.8);
-            //botLeft.setPower(-0.8);
-            //botRight.setPower(-0.8);
-            //topRight.setPower(0.8);
+            topLeft.setPower(0.8);
+            botLeft.setPower(-0.8);
+            botRight.setPower(-0.8);
+            topRight.setPower(0.8);
         }
         else if(gamepad.dpad_right){
             topLeft.setPower(-0.8);
@@ -202,12 +219,12 @@ public class TeleBot extends Robot {
 
     public void moveBothClaws(Gamepad gamepad) {
         if(gamepad.a){
-            claw1.setPosition(1);
-            claw2.setPosition(0);
+            plate1.setPosition(1);
+            plate2.setPosition(0);
         }
         else if(gamepad.x){
-            claw1.setPosition(0);
-            claw2.setPosition(1);
+            plate1.setPosition(0);
+            plate2.setPosition(1);
         }
 
 
@@ -227,16 +244,16 @@ public class TeleBot extends Robot {
     public void moveLiftMotor(Gamepad gamepad) {
 
         if (gamepad.left_trigger != 0 && gamepad.right_trigger == 0) {
-            liftMotor1.setPower(-gamepad.left_trigger);
-            liftMotor2.setPower(-gamepad.left_trigger);
+            liftR.setPower(gamepad.left_trigger);
+            liftL.setPower(gamepad.left_trigger);
         }
         else if (gamepad.right_trigger != 0 && gamepad.left_trigger == 0) {
-            liftMotor1.setPower(gamepad.right_trigger);
-            liftMotor2.setPower(gamepad.right_trigger);
+            liftR.setPower(-gamepad.right_trigger);
+            liftL.setPower(-gamepad.right_trigger);
         }
         else if(gamepad.right_trigger == 0 && gamepad.left_trigger == 0){
-            liftMotor1.setPower(0);
-            liftMotor2.setPower(0);
+            liftR.setPower(0);
+            liftL.setPower(0);
             telemetry.addLine("RIGHT 0");
         }
 
@@ -247,16 +264,30 @@ public class TeleBot extends Robot {
     }
     public void moveArm(Gamepad gamepad){
         if(gamepad.right_bumper&& !gamepad.left_bumper) {
-            arm.setPower(1);
+            arm1.setPower(1);
+            arm2.setPower(1);
         }
         else if(gamepad.left_bumper&&!gamepad.right_bumper) {
-            arm.setPower(-1);
+            arm1.setPower(-1);
+            arm1.setPower(-1);
         }
         else {
-            arm.setPower(0);
+            arm2.setPower(0);
+            arm2.setPower(0);
         }
 
 
+    }
+
+    public void moveIntake(Gamepad gamepad){
+        if(gamepad.y){
+            intakeL.setPower(-.5);
+            intakeR.setPower(.5);
+        }
+        else if(gamepad.b){
+            intakeL.setPower(0);
+            intakeR.setPower(0);
+        }
     }
 
 }

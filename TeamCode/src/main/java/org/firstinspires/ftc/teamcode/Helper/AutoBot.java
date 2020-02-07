@@ -75,12 +75,12 @@ public class AutoBot extends Robot{
 
     public void setUpLiftMotor() {
         try {
-            liftMotor1 = hardwareMap.get(DcMotor.class, "liftMotor");
-            liftMotor1.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-            liftMotor1.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-            liftMotor2 = hardwareMap.get(DcMotor.class, "liftMotor");
-            liftMotor2.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-            liftMotor2.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+            liftL = hardwareMap.get(DcMotor.class, "liftMotor");
+            liftL.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+            liftL.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+            liftR = hardwareMap.get(DcMotor.class, "liftMotor");
+            liftR.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+            liftR.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
             telemetry.addLine("liftMotor : OK");
         } catch (Exception e) {
             telemetry.addLine("liftMotor : ERROR");

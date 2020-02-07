@@ -44,7 +44,7 @@ public class StoneBlueAuto extends OpMode {
             int backwardEncoder = robot.backwardEncoder;
             telemetry.addLine("loop " + count);
             if(count == 0) {
-            robot.strafeUntilSkystoneVadim(robot.loopTensorVadim());
+                robot.strafeUntilSkystoneVadim(robot.loopTensorVadim());
         }
         else if(count == 1) {
             robot.autoCorrect(robot.loopTensorVadim());
