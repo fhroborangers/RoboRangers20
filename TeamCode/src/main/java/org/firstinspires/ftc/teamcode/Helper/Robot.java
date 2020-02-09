@@ -16,7 +16,7 @@ public class Robot {
     public DcMotor liftL,liftR;
     public DcMotor intakeL,intakeR;
     public Servo plate1,plate2, movingClaw, potato;
-    public CRServo arm1,arm2;
+    public CRServo armR,armL;
 
     public Robot(HardwareMap hardwareMap, Telemetry telemetry) {
         this.hardwareMap = hardwareMap;
