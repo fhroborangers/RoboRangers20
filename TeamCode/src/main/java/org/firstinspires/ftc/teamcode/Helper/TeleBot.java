@@ -109,10 +109,12 @@ public class TeleBot extends Robot {
         public void setUpArm(){
 
         try{
-            arm1 = hardwareMap.get(CRServo.class,"armR");
-            arm1.setDirection(FORWARD);
-            arm2 = hardwareMap.get(CRServo.class,"armL");
-            arm2.setDirection(DcMotorSimple.Direction.REVERSE);
+
+            armR = hardwareMap.get(CRServo.class,"armR");
+            armR.setDirection(FORWARD);
+            armL = hardwareMap.get(CRServo.class,"armL");
+            armL.setDirection(REVERSE);
+
 
         }
         catch(Exception e){
@@ -269,16 +271,18 @@ public class TeleBot extends Robot {
     }
     public void moveArm(Gamepad gamepad){
         if(gamepad.right_bumper&& !gamepad.left_bumper) {
-            arm1.setPower(1);
-            arm2.setPower(1);
+            armR.setPower(1);
+            armL.setPower(1);
         }
         else if(gamepad.left_bumper&&!gamepad.right_bumper) {
-            arm1.setPower(-1);
-            arm2.setPower(-1);
+
+            armR.setPower(-1);
+            armL.setPower(-1);
         }
         else {
-            arm1.setPower(0);
-            arm2.setPower(0);
+            armR.setPower(0);
+            armL.setPower(0);
+
         }
 
 
