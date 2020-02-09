@@ -11,6 +11,9 @@ import org.firstinspires.ftc.robotcore.external.Telemetry;
 
 import java.util.concurrent.ExecutionException;
 
+import static com.qualcomm.robotcore.hardware.DcMotorSimple.Direction.FORWARD;
+import static com.qualcomm.robotcore.hardware.DcMotorSimple.Direction.REVERSE;
+
 public class TeleBot extends Robot {
 
     public TeleBot(HardwareMap hardwareMap, Telemetry tele){
@@ -21,7 +24,7 @@ public class TeleBot extends Robot {
         try {
             topLeft = hardwareMap.get(DcMotor.class, "topLeft");
             topLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
-            topLeft.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+            topLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
             telemetry.addLine("topLeft : OK");
         } catch (Exception e) {
             telemetry.addLine("topLeft : ERROR");
@@ -48,7 +51,7 @@ public class TeleBot extends Robot {
         try {
             botRight = hardwareMap.get(DcMotor.class, "botRight");
             botRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
-            botRight.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+            botRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
             telemetry.addLine("botRight : OK");
         } catch (Exception e) {
             telemetry.addLine("botRight : ERROR");
@@ -60,9 +63,11 @@ public class TeleBot extends Robot {
             liftL = hardwareMap.get(DcMotor.class, "liftL");
             liftL.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
             liftL.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+            liftL.setDirection(FORWARD);
             liftR = hardwareMap.get(DcMotor.class, "liftR");
             liftR.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
             liftR.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+            liftR.setDirection(REVERSE);
             telemetry.addLine("liftMotor : OK");
         } catch (Exception e) {
             telemetry.addLine("liftMotor : ERROR");
@@ -105,7 +110,7 @@ public class TeleBot extends Robot {
 
         try{
             arm1 = hardwareMap.get(CRServo.class,"armR");
-            arm1.setDirection(DcMotorSimple.Direction.FORWARD);
+            arm1.setDirection(FORWARD);
             arm2 = hardwareMap.get(CRServo.class,"armL");
             arm2.setDirection(DcMotorSimple.Direction.REVERSE);
 
@@ -269,10 +274,10 @@ public class TeleBot extends Robot {
         }
         else if(gamepad.left_bumper&&!gamepad.right_bumper) {
             arm1.setPower(-1);
-            arm1.setPower(-1);
+            arm2.setPower(-1);
         }
         else {
-            arm2.setPower(0);
+            arm1.setPower(0);
             arm2.setPower(0);
         }
 
