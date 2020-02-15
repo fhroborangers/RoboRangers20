@@ -38,7 +38,7 @@ public class AutoBot extends Robot{
         try {
 
             topLeft = hardwareMap.get(DcMotor.class, "topLeft");
-            topLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+            topLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
             topLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
             telemetry.addLine("topLeft : OK");
         } catch (Exception e) {
@@ -47,7 +47,7 @@ public class AutoBot extends Robot{
 
         try {
             topRight = hardwareMap.get(DcMotor.class, "topRight");
-            topRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+            topRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
             topRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
             telemetry.addLine("topRight : OK");
         } catch (Exception e) {
@@ -56,7 +56,7 @@ public class AutoBot extends Robot{
 
         try {
             botLeft = hardwareMap.get(DcMotor.class, "botLeft");
-            botLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+            botLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
             botLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
             telemetry.addLine("botLeft : OK");
         } catch (Exception e) {
@@ -65,7 +65,7 @@ public class AutoBot extends Robot{
 
         try {
             botRight = hardwareMap.get(DcMotor.class, "botRight");
-            botRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+            botRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
             botRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
             telemetry.addLine("botRight : OK");
         } catch (Exception e) {
@@ -163,15 +163,15 @@ public class AutoBot extends Robot{
     }
 
     public void forwardCos(int ticks){
-        telemetry.addLine(""+(Math.abs(botLeft.getCurrentPosition()) < ticks));
+        telemetry.addLine(""+(Math.abs(topLeft.getCurrentPosition()) < ticks));
         double power;
-        if(ticks - botLeft.getCurrentPosition() > (730 * 2)) {
-           power = (Math.cos((9.87 * botLeft.getCurrentPosition())/(ticks * Math.PI)) / 4) + 0.75;
+        if(ticks - topLeft.getCurrentPosition() > (730 * 2)) {
+           power = (Math.cos((9.87 * topLeft.getCurrentPosition())/(ticks * Math.PI)) / 4) + 0.75;
         }
         else{
             power = 0.5;
         }
-        if(Math.abs(botLeft.getCurrentPosition()) < ticks) {
+        if(Math.abs(topLeft.getCurrentPosition()) < ticks) {
             topLeft.setPower(-power);
             botLeft.setPower(-power);
             topRight.setPower(power);
@@ -402,7 +402,7 @@ public class AutoBot extends Robot{
 
     //Handle Encoders
     public void resetEncoders(){
-        if(botLeft.getCurrentPosition() > 0) {
+        if(topLeft.getCurrentPosition() != 0) {
             topLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
             botLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
             topRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -414,9 +414,6 @@ public class AutoBot extends Robot{
             botRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
             //liftMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         }
-        /*else {
-            count++;
-        }*/
     }
 
     public void printEncoders(){
@@ -470,7 +467,7 @@ public class AutoBot extends Robot{
         int tfodMonitorViewId = hardwareMap.appContext.getResources().getIdentifier(
                 "tfodMonitorViewId", "id", hardwareMap.appContext.getPackageName());
         TFObjectDetector.Parameters tfodParameters = new TFObjectDetector.Parameters(tfodMonitorViewId);
-        tfodParameters.minimumConfidence = 0.8;
+        tfodParameters.minimumConfidence = 0.75;
         tfod = ClassFactory.getInstance().createTFObjectDetector(tfodParameters, vuforia);
         tfod.loadModelFromAsset(TFOD_MODEL_ASSET, LABEL_FIRST_ELEMENT, LABEL_SECOND_ELEMENT);
     }
@@ -511,7 +508,7 @@ public class AutoBot extends Robot{
                     if(recognition.getLabel().equals("Skystone")) {
                         {
                             telemetry.addLine("I see the skystone uwu");
-                            if((recognition.getLeft() + recognition.getRight())/2 < (recognition.getImageWidth()/2) - 70) {
+                            if((recognition.getLeft() + recognition.getRight())/2 > (recognition.getImageWidth()/2) - 35 && (recognition.getLeft() + recognition.getRight())/2 < (recognition.getImageWidth()/2) + 35) {
                                 output = recognition.getImageWidth()/2-(recognition.getLeft()+recognition.getRight()/2);
                             }
                         }
@@ -550,6 +547,7 @@ public class AutoBot extends Robot{
             botLeft.setPower(0);
             topRight.setPower(0);
             botRight.setPower(0);
+            resetEncoders();
             count++;
         }
         else if(position<0) { //mid of skystone is to the right of mid of screen
@@ -583,10 +581,6 @@ public class AutoBot extends Robot{
             botRight.setPower(0);
             count++;
         }
-    }
-
-    public void autoCorrectPosition() {
-
     }
 
 

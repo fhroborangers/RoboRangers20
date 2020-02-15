@@ -41,14 +41,18 @@ public class StoneBlueAuto extends OpMode {
     @Override
     public void loop() {
         int count =  robot.count;
-            int backwardEncoder = robot.backwardEncoder;
-            telemetry.addLine("loop " + count);
-            if(count == 0) {
-                robot.strafeUntilSkystoneVadim(robot.loopTensorVadim());
+        int backwardEncoder = robot.backwardEncoder;
+        telemetry.addLine("loop " + count);
+        if(count == 0) {
+            robot.strafeUntilSkystoneVadim(robot.loopTensorVadim());
         }
         else if(count == 1) {
             robot.autoCorrect(robot.loopTensorVadim());
         }
+        else if(count == 2){
+            robot.forwardCos(1000);
+        }
+
         telemetry.addLine("count: "+count);
         robot.printEncoders();
     }

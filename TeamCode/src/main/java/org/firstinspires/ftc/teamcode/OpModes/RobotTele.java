@@ -29,7 +29,7 @@ public class RobotTele extends OpMode {
         robot.setUpWheels();
         //robot.setUpServos();
         robot.setUpLiftMotors();
-        //robot.setUpIntakeMotors();
+        robot.setUpIntakeMotors();
 
     }
 
@@ -39,7 +39,7 @@ public class RobotTele extends OpMode {
         robot.move(gamepad1);
         //robot.moveBothClaws(gamepad1);
         robot.moveLiftMotor(gamepad1);
-        //robot.moveIntake(gamepad1);
+        robot.moveIntake(gamepad1);
         //robot.potatoServo(gamepad2);
         //robot.moveArm(gamepad1);
 

@@ -24,7 +24,7 @@ public class TeleBot extends Robot {
         try {
             topLeft = hardwareMap.get(DcMotor.class, "topLeft");
             topLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
-            topLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+            topLeft.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
             telemetry.addLine("topLeft : OK");
         } catch (Exception e) {
             telemetry.addLine("topLeft : ERROR");
@@ -33,7 +33,7 @@ public class TeleBot extends Robot {
         try {
             topRight = hardwareMap.get(DcMotor.class, "topRight");
             topRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
-            topRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+            topRight.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
             telemetry.addLine("topRight : OK");
         } catch (Exception e) {
             telemetry.addLine("topRight : ERROR");
@@ -42,7 +42,7 @@ public class TeleBot extends Robot {
         try {
             botLeft = hardwareMap.get(DcMotor.class, "botLeft");
             botLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
-            botLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+            botLeft.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
             telemetry.addLine("botLeft : OK");
         } catch (Exception e) {
             telemetry.addLine("botLeft : ERROR");
@@ -51,7 +51,7 @@ public class TeleBot extends Robot {
         try {
             botRight = hardwareMap.get(DcMotor.class, "botRight");
             botRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
-            botRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+            botRight.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
             telemetry.addLine("botRight : OK");
         } catch (Exception e) {
             telemetry.addLine("botRight : ERROR");
@@ -85,6 +85,22 @@ public class TeleBot extends Robot {
             telemetry.addLine("intake : OK");
         } catch(Exception e) {
             telemetry.addLine("intake : ERROR");
+        }
+    }
+
+    public void setUpIntakeServos() {
+
+        try {
+            intakeSL = hardwareMap.get(Servo.class, "intakeSL");
+            intakeSL.setPosition(0);
+        } catch (Exception e) {
+            telemetry.addLine("intakeSL : ERROR");
+        }
+        try {
+            intakeSR = hardwareMap.get(Servo.class, "intakeSR");
+            intakeSR.setPosition(0);
+        } catch (Exception e) {
+            telemetry.addLine("intakeSR : ERROR");
         }
     }
 
