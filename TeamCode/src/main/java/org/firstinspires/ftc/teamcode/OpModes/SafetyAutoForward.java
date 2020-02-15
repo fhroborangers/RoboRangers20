@@ -1,13 +1,11 @@
 package org.firstinspires.ftc.teamcode.OpModes;
 
-
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import org.firstinspires.ftc.teamcode.Helper.AutoBot;
 
-
-@Autonomous(name = "StoneBlueAuto")
-public class StoneBlueAuto extends OpMode {
+@Autonomous(name = "SafetyAutoForward")
+public class SafetyAutoForward extends OpMode {
 
     AutoBot robot;
 
@@ -15,10 +13,7 @@ public class StoneBlueAuto extends OpMode {
     public void init() {
         telemetry.addLine("init");
         robot = new AutoBot(hardwareMap, telemetry);
-        robot.initTensor();
         telemetry.update();
-
-
     }
 
     public void init_loop() {
@@ -30,36 +25,22 @@ public class StoneBlueAuto extends OpMode {
     public void start() {
         telemetry.addLine("start");
         robot.setUpWheels();
-        //robot.setUpLiftMotor();
-        //robot.setUpClawServos();
         robot.resetEncoders();
         telemetry.addLine("end of start");
         telemetry.update();
     }
+
     @Override
     public void loop() {
         int count =  robot.count;
-        int backwardEncoder = robot.backwardEncoder;
         telemetry.addLine("loop " + count);
-        if(count == 0) {
-            robot.strafeUntilSkystoneVadim(robot.loopTensorVadim());
+        if(count == 0){
+            robot.forwardCM(61/2);
         }
-        else if(count == 1) {
-            robot.autoCorrect(robot.loopTensorVadim());
-        }
-        else if(count == 2){
-            robot.forwardCos(1000);
-        }
-
-        telemetry.addLine("count: "+count);
-        robot.printEncoders();
     }
-
 
     @Override
-    public void stop() {
+    public void stop(){
         telemetry.addLine("stop");
-        robot.stopTensor();
     }
-
 }
