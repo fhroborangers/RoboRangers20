@@ -15,7 +15,7 @@ public class Robot {
     public DcMotor topLeft, topRight, botLeft, botRight;
     public DcMotor liftL,liftR;
     public DcMotor intakeL,intakeR;
-    public Servo plate1,plate2, movingClaw, potato;
+    public Servo plateL,plateR, movingClaw, potato;
     public Servo intakeSL, intakeSR;
     public CRServo armR,armL;
 

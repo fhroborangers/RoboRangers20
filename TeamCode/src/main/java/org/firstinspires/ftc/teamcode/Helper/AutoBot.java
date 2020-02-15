@@ -445,6 +445,19 @@ public class AutoBot extends Robot{
     }
 */
 
+    public void lowerPlateNubs() {
+        plateL.setPosition(1);
+        plateR.setPosition(1);
+        if(plateL.getPosition()==1)
+            count++;
+    }
+
+    public void raisePlateNubs() {
+        plateL.setPosition(0);
+        plateR.setPosition(0);
+        if(plateL.getPosition()==0)
+            count++;
+    }
 
     public void closeClawArm(){
         potato.setPosition(1);
