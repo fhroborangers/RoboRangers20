@@ -31,7 +31,7 @@ public class SafetyAutoForwardRight extends OpMode {
         int backwardEncoder = robot.backwardEncoder;
         telemetry.addLine("loop " + count);
         if(count==0) {
-            robot.forwardCM(61/2);
+            robot.forwardCM(61);
         }
         else if(count==1) {
             robot.strafeRightCM(61/2);
