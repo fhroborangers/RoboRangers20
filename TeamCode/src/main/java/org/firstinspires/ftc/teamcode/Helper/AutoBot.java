@@ -214,6 +214,58 @@ public class AutoBot extends Robot{
         }
     }
 
+    public void strafeRightCos(int ticks){
+        telemetry.addLine(""+(Math.abs(topLeft.getCurrentPosition()) < ticks));
+        double power;
+        if(ticks - topLeft.getCurrentPosition() > (730 * 2)) {
+            power = (Math.cos((9.87 * topLeft.getCurrentPosition())/(ticks * Math.PI)) / 4) + 0.75;
+        }
+        else{
+            power = 0.5;
+        }
+        if(Math.abs(topLeft.getCurrentPosition()) < ticks) {
+            topLeft.setPower(-power);
+            botLeft.setPower(power);
+            topRight.setPower(-power);
+            botRight.setPower(power);
+        }
+        else{
+            telemetry.addLine("here lmao");
+            topLeft.setPower(0);
+            botLeft.setPower(0);
+            topRight.setPower(0);
+            botRight.setPower(0);
+            resetEncoders();
+            count++;
+        }
+    }
+
+    public void strafeLeftCos(int ticks){
+        telemetry.addLine(""+(Math.abs(topLeft.getCurrentPosition()) < ticks));
+        double power;
+        if(ticks - topLeft.getCurrentPosition() > (730 * 2)) {
+            power = (Math.cos((9.87 * topLeft.getCurrentPosition())/(ticks * Math.PI)) / 4) + 0.75;
+        }
+        else{
+            power = 0.5;
+        }
+        if(Math.abs(topLeft.getCurrentPosition()) < ticks) {
+            topLeft.setPower(power);
+            botLeft.setPower(-power);
+            topRight.setPower(power);
+            botRight.setPower(-power);
+        }
+        else{
+            telemetry.addLine("here lmao");
+            topLeft.setPower(0);
+            botLeft.setPower(0);
+            topRight.setPower(0);
+            botRight.setPower(0);
+            resetEncoders();
+            count++;
+        }
+    }
+
     public void rotateLeftCos(int ticks){
         telemetry.addLine(""+(Math.abs(botLeft.getCurrentPosition()) < ticks));
         double power;
@@ -276,6 +328,18 @@ public class AutoBot extends Robot{
         double ticksPerCM = 730 /(10.16*Math.PI);
         int ticks = (int)ticksPerCM * cm;
         backwardCos(ticks);
+    }
+
+    public void strafeRightCM(int cm) {
+        double ticksPerCM = 730 /(10.16*Math.PI);
+        int ticks = (int)ticksPerCM * cm;
+        strafeRightCos(ticks);
+    }
+
+    public void strafeLeftCM(int cm) {
+        double ticksPerCM = 730 /(10.16*Math.PI);
+        int ticks = (int)ticksPerCM * cm;
+        strafeLeftCos(ticks);
     }
 
     public void rotateLeftDegrees(int degrees){
