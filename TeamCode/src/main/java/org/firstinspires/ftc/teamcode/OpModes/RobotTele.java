@@ -25,11 +25,13 @@ public class RobotTele extends OpMode {
     @Override
     public void start() {
         telemetry.addLine("start");
-        //robot.setUpArm();
+        robot.setUpArm();
         robot.setUpWheels();
         //robot.setUpServos();
         robot.setUpLiftMotors();
         robot.setUpIntakeMotors();
+        robot.setUpIntakeServos();
+        robot.setUpPotato();
 
     }
 
@@ -40,8 +42,9 @@ public class RobotTele extends OpMode {
         //robot.moveBothClaws(gamepad1);
         robot.moveLiftMotor(gamepad1);
         robot.moveIntake(gamepad1);
+        robot.potatoServo(gamepad1);
         //robot.potatoServo(gamepad2);
-        //robot.moveArm(gamepad1);
+        robot.moveArm(gamepad1);
 
     }
 

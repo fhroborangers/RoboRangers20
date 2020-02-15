@@ -89,10 +89,9 @@ public class TeleBot extends Robot {
     }
 
     public void setUpIntakeServos() {
-
         try {
             intakeSL = hardwareMap.get(Servo.class, "intakeSL");
-            intakeSL.setPosition(0);
+            intakeSL.setPosition(0.75);
         } catch (Exception e) {
             telemetry.addLine("intakeSL : ERROR");
         }
@@ -137,6 +136,16 @@ public class TeleBot extends Robot {
             telemetry.addLine("arm : error");
         }
 
+    }
+
+    public void setUpPotato() {
+
+        try {
+            potato = hardwareMap.get(Servo.class, "potato");
+
+        } catch (Exception e) {
+            telemetry.addLine("arm : error");
+        }
     }
 
     public void move(Gamepad gamepad) {
@@ -254,12 +263,12 @@ public class TeleBot extends Robot {
     }
 
     public void potatoServo(Gamepad gamepad) {
-        if (gamepad.y)
+        if (gamepad.x)
         {
             potato.setPosition(1);
 
         }
-        if(gamepad.b){
+        if(gamepad.a){
             potato.setPosition(0);
         }
     }
@@ -308,11 +317,17 @@ public class TeleBot extends Robot {
         if(gamepad.y){
             intakeL.setPower(-.5);
             intakeR.setPower(.5);
+            intakeSR.setPosition(1);
+            intakeSL.setPosition(0.80);
         }
         else if(gamepad.b){
             intakeL.setPower(0);
             intakeR.setPower(0);
+            intakeSR.setPosition(1);
+            intakeSL.setPosition(0.75);
         }
     }
+
+
 
 }
