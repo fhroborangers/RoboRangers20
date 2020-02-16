@@ -106,8 +106,8 @@ public class TeleBot extends Robot {
     public void setUpServos() {
 
         try {
-            plate1 = hardwareMap.get(Servo.class, "plate1");
-            plate1.setPosition(0);
+            plateL = hardwareMap.get(Servo.class, "plate1");
+            plateL.setPosition(0);
         } catch (Exception e) {
             telemetry.addLine("plate1 : ERROR");
         }
@@ -251,12 +251,12 @@ public class TeleBot extends Robot {
 
     public void moveBothClaws(Gamepad gamepad) {
         if(gamepad.a){
-            plate1.setPosition(1);
-            plate2.setPosition(0);
+            plateL.setPosition(1);
+            plateR.setPosition(0);
         }
         else if(gamepad.x){
-            plate1.setPosition(0);
-            plate2.setPosition(1);
+            plateL.setPosition(0);
+            plateR.setPosition(1);
         }
 
 

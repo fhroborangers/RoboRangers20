@@ -459,6 +459,22 @@ public class AutoBot extends Robot{
             count++;
     }
 
+    public void turnOnIntake() {
+        intakeL.setPower(-.5);
+        intakeR.setPower(.5);
+        intakeSR.setPosition(1);
+        intakeSL.setPosition(0.80);
+        count++;
+    }
+
+    public void turnOffIntake() {
+        intakeL.setPower(0);
+        intakeR.setPower(0);
+        intakeSR.setPosition(1);
+        intakeSL.setPosition(0.75);
+        count++;
+    }
+
     public void closeClawArm(){
         potato.setPosition(1);
     }
