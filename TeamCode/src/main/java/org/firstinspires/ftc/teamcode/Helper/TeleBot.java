@@ -112,8 +112,8 @@ public class TeleBot extends Robot {
             telemetry.addLine("plate1 : ERROR");
         }
         try{
-            plate2=hardwareMap.get(Servo.class,"plate2");
-            plate2.setPosition(0);
+            plateR=hardwareMap.get(Servo.class,"plate2");
+            plateR.setPosition(0);
         }catch(Exception e){
             telemetry.addLine("plate2 : error");
         }
